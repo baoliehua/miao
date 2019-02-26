@@ -147,8 +147,113 @@ var baoliehua = function (){
     }
 
     function lastIndexOf(array){
-    	
+    	var index = argument[2]?argument[2]:0;
+    	for (var i = index; i <= 0; i--) {
+    		if(argument[0][i] === argument[1]){
+    			return i;
+    		}
+    	}
+    	return -1;
     }
+
+    function nth(array,n) {
+    	return n > 0 ? array[n]:array[array.length + n + 1];
+    }
+
+    function pull(array1,...arg){
+    	var result = [];
+    	for (var i = 0; i < array1.length; i++) {
+    		if(!arg.includes(array1[i])){
+    			result.push(array1[i]);
+    		}
+    	}
+    	return result;
+    }
+
+     function pullAll(array1,array2){
+    	var result = [];
+    	for (var i = 0; i < array1.length; i++) {
+    		if(!array2.includes(array1[i])){
+    			result.push(array1[i]);
+    		}
+    	}
+    	return result;
+    }
+
+    function pullAllWith(argument) {
+    	// body...
+    }
+
+    function pullAt(array1,array2) {
+    	var result = [];
+    	for (var i = 0; i < array2.length; i++) {
+    		result.push(array1[array2[i]]);
+    		delete array1[array2[j]];
+    	}
+    	var len = array2.length;
+    	for (var z = 0; z < len; z++) {
+    		var key = array1.pop();
+    		if(key !== undefined){
+    			array1.unshift(key);
+    		}
+    	}
+    	return result;
+    }
+
+    function remove(array,func){
+    	var result = [];
+    	for (var i = 0; i < array.length; i++) {
+    		if(func(array[i]){
+    			result.push(i);
+    		}
+    	}
+    	return pullAt(array,result);
+    }
+
+    function reverse(array) {
+    	var start = 0;
+    	var end = array.length -1;
+    	while(start < end){
+    		[array[start],array[end]] = [array[end],array[start]];
+    	}
+    }
+
+
+    function slice(array,start = 0,end = array.length + 1){
+    	var result = [];
+    	for(var i = start;i < end;i++){
+    		result.push(array[i]);
+    	}
+    	return result;
+    }
+    
+    function sortedIndex(array,value) {
+    	var start = 0;
+    	var end = array.length;
+    	var index = Math.floor((start - end)/2);
+    	if(value < array[0]){
+    		return 0;
+    	}
+    	if(value > array[array.length - 1]){
+    		return array.length;
+    	}
+    	while(start < end){
+    		if(array[index] < value&&value <array[index + 1]){
+    			return index + 1;
+    		}
+
+    		if(array[index] > value){
+    			end = index;
+    		}
+    		if(array[index] < value){
+    			start = index;
+    		}
+    	}
+
+
+    }
+
+
 
 
 }()
