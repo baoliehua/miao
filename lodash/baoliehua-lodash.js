@@ -1,4 +1,8 @@
 var baoliehua = function (){
+	/**公用函数区，待添加 
+	1、迭代器
+
+	**/
 	//测试通过
 	function chunk(array,n){
 		var result = [];
@@ -249,11 +253,130 @@ var baoliehua = function (){
     			start = index;
     		}
     	}
-
+    }
+ 
+    function sortedLastIndex(array,value) {
+    	for (var i = array.length - 1; i >= 0; i--) {
+    		if(array[i] === value){
+    			return i;
+    		}
+    	}
+    	return -1;
 
     }
 
+    function sortedUniq(array) {
+    	var result = [];
+    	for (var i = 0; i < array.length; i++) {
+    		if(array[i] !== array[i+1]){
+    			result.push(array[i]);
+    		}
+    	}
+    } 
+    
+
+    function tail(array) {
+    	// body...
+    	return array.slice(1);
+    }
+
+    function take(array,n = 1) {
+    	// body...
+    	return array.slice(0,n);
+    }
+
+	function takeRight(array,n = 1) {
+    	// body...
+    	return array.slice(array.length - n);
+    }
+
+    function union(...arg){
+    	var result = new Set();
+    	for (var i = 0; i < arg.length; i++) {
+    		for (var j = 0; j < arg[i].length; j++) {
+    			result.add(arg[i][j]);
+    		}
+    	}
+    	return Array.from(result);
+    }    
+
+    function uniq(...arg){
+    	var result = new Set();
+    	for (var i = 0; i < arg.length; i++) {
+    		for (var j = 0; j < arg[i].length; j++) {
+    			result.add(arg[i][j]);
+    		}
+    	}
+    	return Array.from(result);
+    }
+
+    function zipped(argument) {
+      	// body...
+      	var result = [];
+      	for (var i = 0; i < argument[0].length; i++) {
+      		result[i] = [];
+      		for (var j = 0; j < argument.length; j++) {
+      			result[j][i] !== undefined?result[i].push(result[j][i]):1;
+      		}
+      	}
+      	return result;
+      }
+
+      function without(array,...arg) {
+        	// body...
+        	var result = array;
+        	for (var i = 0; i < arg.length; i++) {
+        		result = result.filler(arg[i]);
+        	}
+        	return result;
+        }
+
+        function xor(argument) {
+         	// body...
+         	var arr = argument.reduce(function(a,b){
+         		a.concat(b);
+         	});
+         	var result = [];
+         	for (var i = 0; i < arr.length; i++) {
+         		if(arr.lastIndexOf(arr[i]) === arr.indexOf(arr[i])){
+         			result.push(arr[i]);
+         		}
+         	}
+         	return result;
+         } 
+
+         function zip(argument) {
+         	var result = [];
+         	for (var i = 0; i < argument[0].length; i++) {
+         		result[i] = [];
+         		for (var j = 0; j < argument.length; j++) {
+         			result[i].push(argument[j][i]);
+         		}
+         	}
+         	return result;
+         }
 
 
+          function zipObject(array1,array2) {
+         	var result = {};
+         	for (var i = 0; i < array1.length; i++) {
+         		a[array1[i]] = array2[i];
+         	}
+         	return result;
+         }
+         //需修改
+         function zipObject(array1,array2) {
+         	var result = {};
+         	for (var i = 0; i < array1.length; i++) {
+         		var key = array1[i];
+         		while(Object.prototype.toString.call(key) === "[object Object]"){
+         			for(var j in key){
+         				key = key[j];
+         			}
+         		}
+         		key[array1[i]] = array2[i];
+         	}
+         	return result;
+         }
 
 }()
