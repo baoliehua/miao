@@ -207,7 +207,7 @@ var baoliehua = function (){
     function remove(array,func){
     	var result = [];
     	for (var i = 0; i < array.length; i++) {
-    		if(func(array[i]){
+    		if(func(array[i])){
     			result.push(i);
     		}
     	}
@@ -365,7 +365,7 @@ var baoliehua = function (){
          	return result;
          }
          //需修改
-         function zipObject(array1,array2) {
+         function zipObjectDeep(array1,array2) {
          	var result = {};
          	for (var i = 0; i < array1.length; i++) {
          		var key = array1[i];
@@ -377,6 +377,30 @@ var baoliehua = function (){
          		key[array1[i]] = array2[i];
          	}
          	return result;
+         }
+
+         function forEach(array,func) {
+           // body...
+           for (var i = 0; i < array.length; i++) {
+             func(array[i]);
+           }
+
+         }
+
+
+
+         function forEachRight(array,func) {
+           // body...
+           for (var i = array.length - 1; i >= 0; i--) {
+             func(array[i]);
+           }
+
+         }
+
+
+         function every(argument) {
+           // body...
+
          }
 
 }()
