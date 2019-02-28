@@ -398,7 +398,7 @@ var baoliehua = function() {
 
          }
 
-
+      console.log(1)
          
 return {
     chunk: chunk,
@@ -541,4 +541,4 @@ return {
     upperCase: upperCase,
     upperFirst: upperFirst,
   }
-}
+}()
