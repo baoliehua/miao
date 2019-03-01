@@ -73,7 +73,8 @@ var baoliehua = function() {
 
 	function drop(array,n) {
     if(arguments[1] === undefined){
-      return array = array.shift();
+      array.shift();
+      return array;
     }
 		while(n){
 			array.shift();
@@ -84,7 +85,8 @@ var baoliehua = function() {
 
     function dropRight(array,n) {
     if(arguments[1] === undefined){
-      return array = array.pop();
+      array.pop();
+      return array;
     }
 		while(n){
 			array.pop();
@@ -157,7 +159,7 @@ var baoliehua = function() {
     }
 
     function lastIndexOf(){
-    	var index = arguments[2]?arguments[2]:0;
+    	var index = arguments[2]?arguments[2]:arguments[0].length - 1;
     	for (var i = index; i >= 0; i--) {
     		if(arguments[0][i] === arguments[1]){
     			return i;
@@ -242,7 +244,7 @@ var baoliehua = function() {
     
     function sortedIndex(array,value) {
       for(var i = 0;i < array.length;i++){
-        if(array[i] > value){
+        if(array[i] >= value){
           return i;
         }
       }
