@@ -37,17 +37,16 @@ var baoliehua = function() {
 	}
 	//未测试
 	function difference(array1,...array2) {
-		var result;
+		var result =[],arr = [];
 		for(var j = 0;j < array2.length;j++){
-			result = [];
-		for(var i = 0;i < array1.length;i++){
-			if(!array2[j].includes(array1[i])){
-				result.push(array1[i]);
-			}
-			array1 = result;
+		  arr = arr.concat(array2[j]);
 		}
-		}
-		return array1;
+    for (var i = 0; i < array1.length; i++) {
+      if(!arr.includes(array1[i])){
+        result.push(array1[i]);
+      }
+    }
+		return result;
 	}
 	function differenceBy (...argument) {
 		var result = [];
@@ -73,6 +72,9 @@ var baoliehua = function() {
 }
 
 	function drop(array,n) {
+    if(argument[1] === undefined){
+      return array = array.shift();
+    }
 		while(n){
 			array.shift();
 			n--;
@@ -81,6 +83,9 @@ var baoliehua = function() {
 	}
 
     function dropRight(array,n) {
+    if(argument[1] === undefined){
+      return array = array.pop();
+    }
 		while(n){
 			array.pop();
 			n--;
@@ -89,23 +94,21 @@ var baoliehua = function() {
 	}
 
 	function dropWhile(array,n) {
-		while(n){
-			array.shift();
-			n--;
-		}
-		return array;
+		
 	}
 
 	function fill(...argument) {
-		if(argument.length === 2){
-			argument[0].forEach(i => argument[1])
-		}else{
-			for(var i = argument[2];i < argument[3];i++){
-				argument[0][i] = argument[1];
-			}
-		}
-		return argument[0];
-	}
+    if(argument.length === 2){
+      for (var i = 0; i < argument[0].length; i++) {
+        argument[0][i] = argument[1];
+      };
+    }else{
+      for(var i = argument[2];i < argument[3];i++){
+        argument[0][i] = argument[1];
+      }
+    }
+    return argument[0];
+  }
 
 	function head(array) {
 			return array[0];// body...
@@ -129,20 +132,22 @@ var baoliehua = function() {
     function intersection(...argument) {
     	var result = [];
     	for(var i = 0;i < argument[0].length;i++){
+        var key = 1;
     		for (var j = 1; j < argument.length; j++) {
     			if(!argument[j].includes(argument[0][i])){
-    				break;
+    				key = 0;
     			}
     		}
-    		result.push(argument[0][i]);
+    		key?result.push(argument[0][i]):1;
     	}
     	return result;
     }
 
     function join(array,str){
-    	var result = array.shift();
+    	var result ="" + array.shift();
     	while(array.length){
-    		result += str + array.shift()
+    		result =result + str + array.shift()//result += str + array.shift();会先将等号右边加好；
+        console.log(result,array)
     	}
     	return result;
     }
@@ -151,10 +156,10 @@ var baoliehua = function() {
     	return array.pop();
     }
 
-    function lastIndexOf(array){
-    	var index = argument[2]?argument[2]:0;
+    function lastIndexOf(){
+    	var index = arguments[2]?arguments[2]:0;
     	for (var i = index; i <= 0; i--) {
-    		if(argument[0][i] === argument[1]){
+    		if(arguments[0][i] === arguments[1]){
     			return i;
     		}
     	}
@@ -162,7 +167,7 @@ var baoliehua = function() {
     }
 
     function nth(array,n) {
-    	return n > 0 ? array[n]:array[array.length + n + 1];
+    	return n > 0 ? array[n]:array[array.length + n];
     }
 
     function pull(array1,...arg){
@@ -220,6 +225,8 @@ var baoliehua = function() {
     	var end = array.length -1;
     	while(start < end){
     		[array[start],array[end]] = [array[end],array[start]];
+        start++;
+        end--;
     	}
     }
 
@@ -233,6 +240,13 @@ var baoliehua = function() {
     }
     
     function sortedIndex(array,value) {
+      for(var i = 0;i < array.length;i++){
+        if(array[i] > value){
+          return i;
+        }
+        return array.length;
+      }
+      /**
     	var start = 0;
     	var end = array.length;
     	var index = Math.floor((start - end)/2);
@@ -254,6 +268,7 @@ var baoliehua = function() {
     			start = index;
     		}
     	}
+      **/
     }
  
     function sortedLastIndex(array,value) {
@@ -273,6 +288,7 @@ var baoliehua = function() {
     			result.push(array[i]);
     		}
     	}
+      return result;
     } 
     
 
@@ -288,6 +304,9 @@ var baoliehua = function() {
 
 	function takeRight(array,n = 1) {
     	// body...
+      if(array.length - n < 0){
+        return array;
+      }
     	return array.slice(array.length - n);
     }
 
@@ -325,18 +344,21 @@ var baoliehua = function() {
 
       function without(array,...arg) {
         	// body...
-        	var result = array;
-        	for (var i = 0; i < arg.length; i++) {
-        		result = result.filler(arg[i]);
+        	var result = [];
+        	for (var i = 0; i < array.length; i++) {
+        		if(!arg.includes(array[i])){
+              result.push(array[i]);
+            }
         	}
         	return result;
         }
 
-        function xor(argument) {
+        function xor(...array) {
          	// body...
-         	var arr = argument.reduce(function(a,b){
-         		a.concat(b);
-         	});
+         for (var i = 1; i < array.length; i++) {
+           array[0] = array[0].concat(array[i]);
+         }
+          var arr = array[0];
          	var result = [];
          	for (var i = 0; i < arr.length; i++) {
          		if(arr.lastIndexOf(arr[i]) === arr.indexOf(arr[i])){
@@ -346,7 +368,7 @@ var baoliehua = function() {
          	return result;
          } 
 
-         function zip(argument) {
+         function zip(...argument) {
          	var result = [];
          	for (var i = 0; i < argument[0].length; i++) {
          		result[i] = [];
@@ -358,13 +380,13 @@ var baoliehua = function() {
          }
 
 
-          function zipObject(array1,array2) {
+        function zipObject(array1,array2) {
          	var result = {};
          	for (var i = 0; i < array1.length; i++) {
-         		a[array1[i]] = array2[i];
+         		result[array1[i]] = array2[i];
          	}
          	return result;
-         }
+        }
          //需修改
          function zipObjectDeep(array1,array2) {
          	var result = {};
@@ -382,6 +404,7 @@ var baoliehua = function() {
 
          function forEach(array,func) {
            // body...
+           func = Function(func);
            for (var i = 0; i < array.length; i++) {
              func(array[i]);
            }
@@ -405,6 +428,7 @@ return {
     compact: compact,
     concat: concat,
     difference: difference,
+    differenceBy:differenceBy,
     drop: drop,
     dropRight: dropRight,
     fill: fill,
