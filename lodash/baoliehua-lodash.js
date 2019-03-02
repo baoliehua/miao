@@ -3,6 +3,33 @@ var baoliehua = function() {
 	1、迭代器
 
 	**/
+  function identity(...value) {
+    return value[0];
+  }
+
+  function iteratee(argument) {
+    if (Object.prototype.toString.call(argument) === "[object String]") {
+      return function (object) {
+        return object[argument] === undefined;
+      }
+    }else if(Object.prototype.toString.call(argument) === "[object Array]"||Object.prototype.toString.call(argument) === "[object Object]"){
+      return function (object) {
+        for(var i in object){
+          if(argument[i] !== object[i]){
+            return false;
+          }
+        }
+        return true;
+      }
+    }else if(Object.prototype.toString.call(argument) === "[object RegExp]"){
+      return function (object) {
+        return argument.test(object);
+    }
+  }else if(Object.prototype.toString.call(argument) === "[object Function]"){
+    console.log("function");
+    return argument;
+  }
+}
 	//测试通过
 	function chunk(array,n){
 		var result = [];
@@ -35,7 +62,7 @@ var baoliehua = function() {
 		}
 		return result;
 	}
-	//未测试
+	
 	function difference(array1,...array2) {
 		var result =[],arr = [];
 		for(var j = 0;j < array2.length;j++){
@@ -48,28 +75,45 @@ var baoliehua = function() {
     }
 		return result;
 	}
-	function differenceBy (...argument) {
+
+
+	function differenceBy (array,...arg) {
 		var result = [];
-		if (Object.prototype.toString.call(argument[argument.length -1]) === "[object Array]") {
-			return difference(argument[0],argument.slice(1));
-		}
-		if (argument[0]  === "[object Object]") {
-			for (var i = 0; i < argument.length - 1; i++) {
-				for (var j in argument[i]) {
-					argument[i][j] = argument[i][j][argument[argument.length - 1]];
-				}
-			}
-			return difference(argument[0],argument.slice(1,argument.length - 1));
-		}
-		if (Object.prototype.toString.call(argument[argument.length -1]) === "[object Function]") {
-			for (var i = 0; i < argument.length - 1; i++) {
-				for (var j in argument[i]) {
-					argument[i][j] = argument[argument.length - 1](argument[i][j]);
-				}
-	    }
-	    return difference(argument[0],argument.slice(1,argument.length - 1));
-	}
-}
+    var func = iteratee(arg[arg.length - 1]);
+    //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(func(arg[i][j]));
+      }
+    }
+    for (var z = 0; z < array.length; z++) {
+      if(!arr.includes(func(array[z]))){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+
+
+  function differenceWith (array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+      }
+    }
+    for (var z = 0; z < array.length; z++) {
+      if(func(array[z],arr)){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+
 
 	function drop(array,n) {
     if(arguments[1] === undefined){
@@ -96,7 +140,14 @@ var baoliehua = function() {
 	}
 
 	function dropWhile(array,n) {
-		
+    var result = [];
+    var func = iteratee(n);
+		for (var i = 0; i < array.length; i++) {
+      if(!func(array[i])){
+        result.push(array[i])
+      }
+    }
+    return result;
 	}
 
 	function fill(...argument) {
@@ -110,6 +161,28 @@ var baoliehua = function() {
       }
     }
     return argument[0];
+  }
+
+  function findIndex(array,...arg) {
+    var func = iteratee(arg[0]);
+    var index = arg.length > 1?arg[arg.length - 1]:0;
+    for (var i = index; i < array.length; i++) {
+      if(func(array[i])){
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  function findIndex(array,...arg) {
+    var func = iteratee(arg[0]);
+    var index = arg.length > 1?arg[arg.length - 1]:array.length - 1;
+    for (var i = index; i >= 0; i--) {
+      if(func(array[i])){
+        return i;
+      }
+    }
+    return -1;
   }
 
 	function head(array) {
@@ -424,16 +497,19 @@ var baoliehua = function() {
 
          }
 
-      console.log(1)
+      
          
 return {
+    identity:identity,
     chunk: chunk,
     compact: compact,
     concat: concat,
     difference: difference,
     differenceBy:differenceBy,
+    differenceWith:differenceWith,
     drop: drop,
     dropRight: dropRight,
+    dropWhile:dropWhile,
     fill: fill,
     head: head,
     indexOf: indexOf,
