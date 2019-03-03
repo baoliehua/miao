@@ -127,7 +127,7 @@ var baoliehua = function() {
 		return array;
 	}
 
-    function dropRight(array,n) {
+  function dropRight(array,n) {
     if(arguments[1] === undefined){
       array.pop();
       return array;
@@ -138,6 +138,18 @@ var baoliehua = function() {
 		}
 		return array;
 	}
+
+  function dropRightWhile(array,n) {
+    var func = iteratee(n);
+    if(arguments[1] === undefined){
+      array.pop();
+      return array;
+    }
+    while(array.length&&!func(array[array.length - 1])){
+      array.pop();
+    }
+    return array;
+  }
 
 	function dropWhile(array,n) {
     var result = [];
@@ -174,7 +186,7 @@ var baoliehua = function() {
     return -1;
   }
 
-  function findIndex(array,...arg) {
+  function findLastIndex(array,...arg) {
     var func = iteratee(arg[0]);
     var index = arg.length > 1?arg[arg.length - 1]:array.length - 1;
     for (var i = index; i >= 0; i--) {
@@ -360,7 +372,7 @@ var baoliehua = function() {
     return result;
   }
 
-  function pullWith (array,...arg) {
+  function pullAllWith (array,...arg) {
     var result = [];
     var func = iteratee(arg[arg.length - 1]);
     //console.log(func,arg[arg.length-1],arg);
@@ -542,6 +554,21 @@ var baoliehua = function() {
     return result;
   }
 
+  function unionWith(...arg) {
+    var result = new Set();
+    var func = iteratee(arg[arg.length - 1]);
+    var arr = [],newarr = [];
+    for (var i = 0; i < arg.length; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+        newarr.push(func(arg[i][j]));
+      }
+    }
+    for (var z = 0; z < newarr.length; z++) {
+      result.add(arr[newarr.indexOf(newarr[z])]);
+    }
+    return result;
+  }
 
   function uniq(...arg){
   	var result = new Set();
@@ -731,7 +758,6 @@ var baoliehua = function() {
     }
          
 return {
-    identity:identity,
     chunk: chunk,
     compact: compact,
     concat: concat,
@@ -740,32 +766,59 @@ return {
     differenceWith:differenceWith,
     drop: drop,
     dropRight: dropRight,
+    dropRightWhile:dropRightWhile,
     dropWhile:dropWhile,
     fill: fill,
+    findIndex:findIndex,
+    findLastIndex:findLastIndex,
     head: head,
+    flatten:flatten,
+    flattenDeep:flattenDeep,
+    flattenDepth:flattenDepth,
+    fromPairs:fromPairs,
     indexOf: indexOf,
     initial: initial,
     intersection: intersection,
+    intersectionBy:intersectionBy,
+    intersectionWith:intersectionWith,
     join: join,
     last: last,
     lastIndexOf: lastIndexOf,
     nth: nth,
     pull: pull,
     pullAll: pullAll,
+    pullAllBy:pullAllBy,
+    pullAllWith:pullAllWith,
     pullAt: pullAt,
+    remove:remove,
     reverse: reverse,
     slice: slice,
     sortedIndex: sortedIndex,
+    sortedIndexBy:sortedIndexBy,
+    sortedIndexOf:sortedIndexOf,
+    sortedLastIndex:sortedLastIndex,
+    sortedLastIndexBy:sortedLastIndexBy,
+    sortedLastIndexOf:sortedLastIndexOf,
     sortedUniq: sortedUniq,
     tail: tail,
     take: take,
     takeRight: takeRight,
     union: union,
+    unionBy:unionBy,
+    unionWith:unionWith,
     uniq: uniq,
+    uniqBy:uniqBy,
+    uniqWith:uniqWith,
+    unzip:unzip,
+    unzipWith:unzipWith,
     without: without,
     xor: xor,
+    xorBy:xorBy,
+    xorWith:xorWith,
     zip: zip,
     zipObject: zipObject,
+    zipObjectDeep:zipObjectDeep,
+    zipWith:zipWith,
     forEach: forEach,
     forEachRight: forEachRight,
   }
