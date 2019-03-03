@@ -10,11 +10,12 @@ var baoliehua = function() {
   function iteratee(argument) {
     if (Object.prototype.toString.call(argument) === "[object String]") {
       return function (object) {
-        return object[argument] === undefined;
+        return object[argument] ;
       }
     }else if(Object.prototype.toString.call(argument) === "[object Array]"||Object.prototype.toString.call(argument) === "[object Object]"){
       return function (object) {
-        for(var i in object){
+        for(var i in argument){
+          console.log(argument[i] !== object[i],argument[i],object[i])
           if(argument[i] !== object[i]){
             return false;
           }
@@ -24,13 +25,13 @@ var baoliehua = function() {
     }else if(Object.prototype.toString.call(argument) === "[object RegExp]"){
       return function (object) {
         return argument.test(object);
+      }
+    }else if(Object.prototype.toString.call(argument) === "[object Function]"){
+      console.log("function");
+      return argument;
     }
-  }else if(Object.prototype.toString.call(argument) === "[object Function]"){
-    console.log("function");
-    return argument;
   }
-}
-
+//实现功能
 	function chunk(array,n){
 		var result = [];
 		while(array.length > n ){
@@ -78,6 +79,9 @@ var baoliehua = function() {
 
 
 	function differenceBy (array,...arg) {
+    if (Object.prototype.toString.call(arg[arg.length - 1]) === "[object Array]") {
+      return difference(array,...arg);
+    }
 		var result = [];
     var func = iteratee(arg[arg.length - 1]);
     //console.log(func,arg[arg.length-1],arg);
@@ -87,6 +91,7 @@ var baoliehua = function() {
         arr.push(func(arg[i][j]));
       }
     }
+    console.log(arr,func);
     for (var z = 0; z < array.length; z++) {
       if(!arr.includes(func(array[z]))){
         result.push(array[z]);
@@ -140,13 +145,33 @@ var baoliehua = function() {
 	}
 
   function dropRightWhile(array,n) {
-    var func = iteratee(n);
     if(arguments[1] === undefined){
       array.pop();
       return array;
     }
-    while(array.length&&!func(array[array.length - 1])){
-      array.pop();
+
+    //最后一个参数为数组
+    if (Object.prototype.toString.call(n) === "[object Array]") {
+      var object = {};
+      object[n[0]] = n[1];
+      var func = iteratee(object);
+      while(array.length&&func(array[array.length - 1])){
+        array.pop();
+      }
+    }
+    //最后一个参数为对象
+    if (Object.prototype.toString.call(n) === "[object Object]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[array.length - 1])){
+        array.pop();
+      }
+    }
+    //最后一个参数为字符串
+    if (Object.prototype.toString.call(n) === "[object Object]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[array.length - 1]) === undefined){
+        array.pop();
+      }
     }
     return array;
   }
