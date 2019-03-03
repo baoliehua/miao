@@ -528,6 +528,33 @@ var baoliehua = function() {
     	return array.slice(array.length - n);
   }
 
+  function takeRightWhile(array,func) {
+      var reslut = [];
+      func = iteratee(func);
+      var index;
+      for (var i = array.length - 1; i >= 0; i++) {
+        if(!func(array[i])){
+          index = i;
+          break;
+        }
+      }
+      return index?array.slice(index+1):array;
+  }
+
+  function takeWhile(array,func) {
+      var reslut = [];
+      func = iteratee(func);
+      var index;
+      for (var i = 0; i < array.length; i++) {
+        if(!func(array[i])){
+          index = i;
+          break;
+        }
+      }
+      return index?array.slice(0,index):array;
+  }
+
+
   function union(...arg){
   	var result = new Set();
   	for (var i = 0; i < arg.length; i++) {
@@ -800,9 +827,12 @@ return {
     sortedLastIndexBy:sortedLastIndexBy,
     sortedLastIndexOf:sortedLastIndexOf,
     sortedUniq: sortedUniq,
+    sortedUniqBy:sortedUniqBy,
     tail: tail,
     take: take,
     takeRight: takeRight,
+    takeRightWhile:takeRightWhile,
+    takeWhile:takeWhile,
     union: union,
     unionBy:unionBy,
     unionWith:unionWith,
