@@ -852,23 +852,259 @@ var baoliehua = function() {
     }
     return result;
   }
-   function forEach(array,func) {
-     // body...
-     func = Function(func);
-     for (var i = 0; i < array.length; i++) {
-       func(array[i]);
-     }
-   }
-     function forEachRight(array,func) {
-       // body...
-       for (var i = array.length - 1; i >= 0; i--) {
-         func(array[i]);
-       
-     }
+   
 
+  //Collection
+  function countBy(array,func) {
+    var result = {};
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      result[func(array[i])]?result[func(array[i])]++:result[func(array[i])] = 1;
     }
-         
-return {
+    return result;
+  }
+  function forEach(array,func) {
+    // body...
+    func = Function(func);
+    for (var i = 0; i < array.length; i++) {
+      func(array[i]);
+    }
+  }
+  function forEachRight(array,func) {
+    // body...
+    for (var i = array.length - 1; i >= 0; i--) {
+      func(array[i]);
+    }
+  }
+
+
+  function every(array,func) {
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      if(!func(array[i])){
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  function filter(array,func) {
+    var result = [];
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      if(func(array[i])){
+        result.push(array[i]);
+      }
+    }
+    return result;
+  }
+
+
+  function find(array,func,index = 0) {
+    func = iteratee(func);
+    for (var i = index; i < array.length; i++) {
+      if(func(array[i])){
+        return array[i];
+      }
+    }
+  }
+
+
+  function findLast(array,func,index = array.length-1) {
+    func = iteratee(func);
+    for (var i = index; i >=0; i--) {
+      if(func(array[i])){
+        return array[i];
+      }
+    }
+  }
+
+
+  function flatMap(array,func) {
+    func = iteratee(func);
+    var result = [];
+    for (var i = 0; i < array.length; i++) {
+      result.concat(func(array[i]))
+    }
+    return result;
+  }
+
+  function flatMapDeep(array,func) {
+    func = iteratee(func);
+    var result = [];
+    for (var i = 0; i < array.length; i++) {
+      result.concat(func(array[i]))
+      }
+    
+    result = flattenDeep(result);
+    return result;
+  }
+
+  function flatMapDepth(array,func,n) {
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      array[i] = func(array[i]);
+    }
+    return flattenDepth(result,n);
+  }
+
+  function groupBy(array,func) {
+    func = iteratee(func);
+    var result = {};
+    for (var i = 0; i < array.length; i++) {
+      result[func(array[i])] ?result[func(array[i])].push(array[i]):result[func(array[i])] = [array[i]];
+    }
+    return result;
+  }
+
+  function includes(array,value,index = 0) {
+    for (var i = index; i < array.length; i++) {
+      if(array[i] === value){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  function invokeMap(array,...arg) {
+    var func = iteratee(arg[0]);
+    if (arg.length === 1) {
+      for (var i = 0; i < array.length; i++) {
+        array[i] = array[i].func();
+      }
+    }else{
+      for (var i = 0; i < array.length; i++) {
+        array[i] = array[i].func(arg[1]);
+      }
+    }
+  }
+
+
+  function keyBy(array,func) {
+    var result = {};
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      result[func(array[i])] = array[i];
+    }
+    return result;
+  }
+
+  function map(array,func) {
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      array[i] = func(array[i]);
+    }
+    return array;
+  }
+
+  function orderBy(argument) {
+    // body...
+  }
+
+  function partition(array,func) {
+    func = iteratee(func);
+    var result = [[],[]];
+    for (var i = 0; i < array.length; i++) {
+      if(func(array[i])){
+        result[0].push(array[i]);
+      }else{
+        result[1].push(array[i]);
+      }
+    }
+    return result;
+  }
+
+
+  function reduce(array,func,init) {
+    func = iteratee(func);
+    if(init !== undefined){
+      var result = init;
+      for (var i = 0; i < array.length; i++) {
+        result = func(result,array[i]);
+      }
+    }else{
+      var result = array[0];
+      for (var i = 1; i < array.length; i++) {
+        result = func(result,array[i]);
+      }
+    }
+    return result;
+  }
+
+  function reduceRight(array,func,init) {
+    func = iteratee(func);
+    if(init !== undefined){
+      var result = init;
+      for (var i = array.length - 1; i >=0; i--) {
+        result = func(result,array[i]);
+      }
+    }else{
+      var result = array[array.length-1];
+      for (var i = array.length - 2; i >=0; i--) {
+        result = func(result,array[i]);
+      }
+    }
+    return result;
+  }
+
+  function reject(array,func) {
+    func = iteratee(func);
+    var result = [];
+    for (var i = 0; i < array.length; i++) {
+     if(!func(array[i])){
+      result.push(array[i]);
+     }
+    }
+    return result;
+  }
+
+  function sample(array) {
+    return array[Math.floor(Math.random()*array.length)];
+  }
+
+  function sampleSize(array,n = 1) {
+    var result = [];
+    for (var i = 0; i < n&&array.length; i++) {
+      var index = Math.floor(Math.random()*array.length);
+      result.push(array[index]);
+      array.splice(index,1);
+    }
+    return result;
+  }
+
+  function shuffle(array) {
+    return sampleSize(array,array.length);
+  }
+  
+  function size(array){
+    var count = 0;
+    for(var i in array){
+      count++;
+    }
+    return count;
+  } 
+
+  function some(array,func) {
+    func = iteratee(func);
+    for (var i = 0; i < array.length; i++) {
+      if(func(array[i])){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function sortBy(array,func) {
+    func = iteratee(func);
+    array.sort(function(a,b){
+      return func(a) - func(b);
+    })
+  }
+
+
+  return {
     chunk: chunk,
     compact: compact,
     concat: concat,
@@ -933,7 +1169,31 @@ return {
     zipObject: zipObject,
     zipObjectDeep:zipObjectDeep,
     zipWith:zipWith,
+    countBy:countBy,
     forEach: forEach,
     forEachRight: forEachRight,
+    every:every,
+    filter:filter,
+    find:find,
+    findLast:findLast,
+    flatMap:flatMap,
+    flatMapDeep:flatMapDeep,
+    flatMapDepth:flatMapDepth,
+    groupBy:groupBy,
+    includes:includes,
+    invokeMap:invokeMap,
+    keyBy:keyBy,
+    map:map,
+    orderBy:orderBy,
+    partition:partition,
+    reduce:reduce,
+    reduceRight:reduceRight,
+    reject:reject,
+    sample:sample,
+    sampleSize:sampleSize,
+    shuffle:shuffle,
+    size:size,
+    some:some,
+    sortBy:sortBy
   }
 }()
