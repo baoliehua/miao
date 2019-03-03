@@ -613,7 +613,7 @@ var baoliehua = function() {
         if(!func(array[i])){
           break;
         }
-        result.push(array[i]);
+        result.unshift(array[i]);
       }
       return result;
   }
