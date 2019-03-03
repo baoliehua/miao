@@ -173,19 +173,54 @@ var baoliehua = function() {
         array.pop();
       }
     }
+
+    if (Object.prototype.toString.call(n) === "[object Function]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[array.length - 1])){
+        array.pop();
+      }
+    }
     return array;
   }
 
 	function dropWhile(array,n) {
-    var result = [];
-    var func = iteratee(n);
-		for (var i = 0; i < array.length; i++) {
-      if(!func(array[i])){
-        result.push(array[i])
+    if(arguments[1] === undefined){
+      array.pop();
+      return array;
+    }
+
+    //最后一个参数为数组
+    if (Object.prototype.toString.call(n) === "[object Array]") {
+      var object = {};
+      object[n[0]] = n[1];
+      var func = iteratee(object);
+      while(array.length&&func(array[0])){
+        array.shift();
       }
     }
-    return result;
-	}
+    //最后一个参数为对象
+    if (Object.prototype.toString.call(n) === "[object Object]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[0])){
+        array.shift();
+      }
+    }
+    //最后一个参数为字符串
+    if (Object.prototype.toString.call(n) === "[object Object]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[0]) === undefined){
+        array.shift();
+      }
+    }
+
+    if (Object.prototype.toString.call(n) === "[object Function]") {
+      var func = iteratee(n);
+      while(array.length&&func(array[0])){
+        array.shift();
+      }
+    }
+    return array;
+  }
 
 	function fill(...argument) {
     if(argument.length === 2){
@@ -201,6 +236,11 @@ var baoliehua = function() {
   }
 
   function findIndex(array,...arg) {
+    if(Object.prototype.toString.call(arg[0]) === "[object Array]"){
+      var object = {};
+      object[arg[0][0]] = arg[0][1];
+      arg[0] = object;
+    }
     var func = iteratee(arg[0]);
     var index = arg.length > 1?arg[arg.length - 1]:0;
     for (var i = index; i < array.length; i++) {
@@ -212,6 +252,11 @@ var baoliehua = function() {
   }
 
   function findLastIndex(array,...arg) {
+    if(Object.prototype.toString.call(arg[0]) === "[object Array]"){
+      var object = {};
+      object[arg[0][0]] = arg[0][1];
+      arg[0] = object;
+    }
     var func = iteratee(arg[0]);
     var index = arg.length > 1?arg[arg.length - 1]:array.length - 1;
     for (var i = index; i >= 0; i--) {
@@ -251,15 +296,16 @@ var baoliehua = function() {
     var key = 1;
     while(key){
       var result = [];
-      k = 0;
+      key = 0;
       for (var i = 0; i < array.length; i++) {
-      if(Object.prototype.toString.call(array[i]) === "[object Array]"){
-        result = result.concat(array[i]);
-        key = 1;
-      }else{
-        result.push(array[i]);
+       // console.log(array[i])
+        if(Object.prototype.toString.call(array[i]) === "[object Array]"){
+          result = result.concat(array[i]);
+          key = 1;
+        }else{
+          result.push(array[i]);
+        }
       }
-    }
     array = result;
     }
     return array;
@@ -470,9 +516,9 @@ var baoliehua = function() {
   function sortedIndexBy(array,...arg) {
     var func = iteratee(arg[arg.length - 1]);
     var value = func(arg[0]);
-    for (var z = array.length - 1; z >= 0; z--) {
-      if(func(array[z]) > value){
-        return i;
+    for (var z = 0; z < array.length; z++) {
+      if(func(array[z]) >= value){
+        return z;
       }
     }
   }
@@ -488,7 +534,7 @@ var baoliehua = function() {
 
   function sortedLastIndex(array,value) {
   	for (var i = array.length - 1; i >= 0; i--) {
-  		if(array[i] < value){
+  		if(array[i] <= value){
   			return i + 1;
   		}
   	}
@@ -498,10 +544,11 @@ var baoliehua = function() {
     var func = iteratee(arg[arg.length - 1]);
     var value = func(arg[0]);
     for (var z = array.length - 1; z >= 0; z--) {
-      if(func(array[z]) < value){
-        return i + 1;
+      if(func(array[z]) <= value){
+        return z + 1;
       }
     }
+    return 0;
   }
 
   function sortedLastIndexOf(array,value) {
@@ -554,29 +601,39 @@ var baoliehua = function() {
   }
 
   function takeRightWhile(array,func) {
-      var reslut = [];
+      if (Object.prototype.toString.call(func) === "[object Array]") {
+        var object = {};
+        object[func[0]] = func[1];
+        func = object;
+      }
+      var result = [];
       func = iteratee(func);
       var index;
-      for (var i = array.length - 1; i >= 0; i++) {
+      for (var i = array.length - 1; i >= 0; i--) {
         if(!func(array[i])){
-          index = i;
           break;
         }
+        result.push(array[i]);
       }
-      return index?array.slice(index+1):array;
+      return result;
   }
 
   function takeWhile(array,func) {
-      var reslut = [];
+      if (Object.prototype.toString.call(func) === "[object Array]") {
+        var object = {};
+        object[func[0]] = func[1];
+        func = object;
+      }
+      var result = [];
       func = iteratee(func);
       var index;
       for (var i = 0; i < array.length; i++) {
         if(!func(array[i])){
-          index = i;
           break;
         }
+        result.push(array[i]);
       }
-      return index?array.slice(0,index):array;
+      return result;
   }
 
 
@@ -594,7 +651,7 @@ var baoliehua = function() {
     var result = new Set();
     var func = iteratee(arg[arg.length - 1]);
     var arr = [],newarr = [];
-    for (var i = 0; i < arg.length; i++) {
+    for (var i = 0; i < arg.length - 1; i++) {
       for (var j = 0; j < arg[i].length; j++) {
         arr.push(arg[i][j]);
         newarr.push(func(arg[i][j]));
@@ -603,7 +660,7 @@ var baoliehua = function() {
     for (var z = 0; z < newarr.length; z++) {
       result.add(arr[newarr.indexOf(newarr[z])]);
     }
-    return result;
+    return Array.from(result);
   }
 
   function unionWith(...arg) {
@@ -712,7 +769,7 @@ var baoliehua = function() {
   function xorBy(...array) {
     var newarr = [],arr = [];
     var func = iteratee(array[array.length - 1]);
-    for (var i = 1; i < array.length - 1; i++) {
+    for (var i = 0; i < array.length - 1; i++) {
       for (var j = 0; j < array[i].length; j++) {
         newarr.push(func(array[i][j]));
         arr.push(array[i][j]);
@@ -720,6 +777,7 @@ var baoliehua = function() {
     }
     var result = [];
     for (var i = 0; i < arr.length; i++) {
+      console.log(newarr,i,arr[i])
       if(newarr.lastIndexOf(newarr[i]) === newarr.indexOf(newarr[i])){
         result.push(arr[i]);
       }
