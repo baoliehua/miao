@@ -30,7 +30,7 @@ var baoliehua = function() {
     return argument;
   }
 }
-	//测试通过
+
 	function chunk(array,n){
 		var result = [];
 		while(array.length > n ){
@@ -189,194 +189,324 @@ var baoliehua = function() {
 			return array[0];// body...
 		}	
    
-    function indexOf(...argument) {
-    	var index = argument[2]?argument[2]:0;
-    	for (var i = index; i < argument[0].length; i++) {
-    		if(argument[0][i] === argument[1]){
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
-
-    function initial(array) {
-    	array.pop();
-    	return array; 
-    }
-
-    function intersection(...argument) {
-    	var result = [];
-    	for(var i = 0;i < argument[0].length;i++){
-        var key = 1;
-    		for (var j = 1; j < argument.length; j++) {
-    			if(!argument[j].includes(argument[0][i])){
-    				key = 0;
-    			}
-    		}
-    		key?result.push(argument[0][i]):1;
-    	}
-    	return result;
-    }
-
-    function join(array,str){
-    	var result ="" + array.shift();
-    	while(array.length){
-    		result =result + str + array.shift()//result += str + array.shift();会先将等号右边加好；
-        console.log(result,array)
-    	}
-    	return result;
-    }
-
-    function last(array) {
-    	return array.pop();
-    }
-
-    function lastIndexOf(){
-    	var index = arguments[2]?arguments[2]:arguments[0].length - 1;
-    	for (var i = index; i >= 0; i--) {
-    		if(arguments[0][i] === arguments[1]){
-    			return i;
-    		}
-    	}
-    	return -1;
-    }
-
-    function nth(array,n) {
-    	return n > 0 ? array[n]:array[array.length + n];
-    }
-
-    function pull(array1,...arg){
-    	var result = [];
-    	for (var i = 0; i < array1.length; i++) {
-    		if(!arg.includes(array1[i])){
-    			result.push(array1[i]);
-    		}
-    	}
-    	return result;
-    }
-
-     function pullAll(array1,array2){
-    	var result = [];
-    	for (var i = 0; i < array1.length; i++) {
-    		if(!array2.includes(array1[i])){
-    			result.push(array1[i]);
-    		}
-    	}
-    	return result;
-    }
-
-    function pullAllWith(argument) {
-    	// body...
-    }
-
-    function pullAt(array1,array2) {
-    	var result = [];
-    	for (var i = 0; i < array2.length; i++) {
-    		result.push(array1[array2[i]]);
-    		delete array1[array2[j]];
-    	}
-    	var len = array2.length;
-    	for (var z = 0; z < len; z++) {
-    		var key = array1.pop();
-    		if(key !== undefined){
-    			array1.unshift(key);
-    		}
-    	}
-    	return result;
-    }
-
-    function remove(array,func){
-    	var result = [];
-    	for (var i = 0; i < array.length; i++) {
-    		if(func(array[i])){
-    			result.push(i);
-    		}
-    	}
-    	return pullAt(array,result);
-    }
-
-    function reverse(array) {
-    	var start = 0;
-    	var end = array.length -1;
-    	while(start < end){
-    		[array[start],array[end]] = [array[end],array[start]];
-        start++;
-        end--;
-    	}
-      return array;
-    }
-
-
-    function slice(array,start = 0,end = array.length + 1){
-    	var result = [];
-    	for(var i = start;i < end;i++){
-    		result.push(array[i]);
-    	}
-    	return result;
-    }
-    
-    function sortedIndex(array,value) {
-      for(var i = 0;i < array.length;i++){
-        if(array[i] >= value){
-          return i;
-        }
+  function indexOf(...argument) {
+  	var index = argument[2]?argument[2]:0;
+  	for (var i = index; i < argument[0].length; i++) {
+  		if(argument[0][i] === argument[1]){
+  			return i;
+  		}
+  	}
+  	return -1;
+  }
+  
+  function flatten(array) {
+    var result = [];
+    for (var i = 0; i < array.length; i++) {
+      if(Object.prototype.toString.call(array[i]) === "[object Array]"){
+        result = result.concat(array[i]);
+      }else{
+        result.push(array[i]);
       }
-      return array.length;
-      /**
-    	var start = 0;
-    	var end = array.length;
-    	var index = Math.floor((start - end)/2);
-    	if(value < array[0]){
-    		return 0;
-    	}
-    	if(value > array[array.length - 1]){
-    		return array.length;
-    	}
-    	while(start < end){
-    		if(array[index] < value&&value <array[index + 1]){
-    			return index + 1;
-    		}
-
-    		if(array[index] > value){
-    			end = index;
-    		}
-    		if(array[index] < value){
-    			start = index;
-    		}
-    	}
-      **/
     }
- 
-    function sortedLastIndex(array,value) {
-    	for (var i = array.length - 1; i >= 0; i--) {
-    		if(array[i] === value){
-    			return i;
-    		}
-    	}
-    	return -1;
-
+    return result;
+  }
+  function flattenDeep(array) {
+    var key = 1;
+    while(key){
+      var result = [];
+      k = 0;
+      for (var i = 0; i < array.length; i++) {
+      if(Object.prototype.toString.call(array[i]) === "[object Array]"){
+        result = result.concat(array[i]);
+        key = 1;
+      }else{
+        result.push(array[i]);
+      }
     }
-
-    function sortedUniq(array) {
-    	var result = [];
-    	for (var i = 0; i < array.length; i++) {
-    		if(array[i] !== array[i+1]){
-    			result.push(array[i]);
-    		}
-    	}
-      return result;
-    } 
-    
-
-    function tail(array) {
-    	// body...
-    	return array.slice(1);
+    array = result;
     }
-
-    function take(array,n = 1) {
-    	// body...
-    	return array.slice(0,n);
+    return array;
+  }
+  function flattenDepth(array,n = 1) {
+    while(n){
+      var result = [];
+      k = 0;
+      for (var i = 0; i < array.length; i++) {
+      if(Object.prototype.toString.call(array[i]) === "[object Array]"){
+        result = result.concat(array[i]);
+      }else{
+        result.push(array[i]);
+      }
     }
+    array = result;
+    n--;
+    }
+    return array;
+  }
+  function fromPairs(pairs) {
+    var result = {};
+    for (var i = 0; i < pairs.length; i++) {
+      result[pairs[i][0]] = pairs[i][1];
+    }
+    return result;
+  }
+  function initial(array) {
+  	array.pop();
+  	return array; 
+  }
+  function intersection(...argument) {
+  	var result = [];
+  	for(var i = 0;i < argument[0].length;i++){
+      var key = 1;
+  		for (var j = 1; j < argument.length; j++) {
+  			if(!argument[j].includes(argument[0][i])){
+  				key = 0;
+  			}
+  		}
+  		key?result.push(argument[0][i]):1;
+  	}
+  	return result;
+  }
+  function intersectionBy(array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+  //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(func(arg[i][j]));
+      }
+    }
+    for (var z = 0; z < array.length; z++) {
+      if(arr.includes(func(array[z]))){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+  function intersectionWith (array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+      }
+   }
+    for (var z = 0; z < array.length; z++) {
+     if(func(array[z],arr)){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+  function join(array,str){
+  	var result ="" + array.shift();
+  	while(array.length){
+  		result =result + str + array.shift()//result += str + array.shift();会先将等号右边加好；
+      console.log(result,array)
+  	}
+  	return result;
+  }
+  function last(array) {
+  	return array.pop();
+  }
+  function lastIndexOf(){
+  	var index = arguments[2]?arguments[2]:arguments[0].length - 1;
+  	for (var i = index; i >= 0; i--) {
+  		if(arguments[0][i] === arguments[1]){
+  			return i;
+  		}
+  	}
+  	return -1;
+  }
+  function nth(array,n) {
+  	return n > 0 ? array[n]:array[array.length + n];
+  }
+  function pull(array1,...arg){
+  	var result = [];
+  	for (var i = 0; i < array1.length; i++) {
+  		if(!arg.includes(array1[i])){
+  			result.push(array1[i]);
+  		}
+  	}
+  	return result;
+  }
+   function pullAll(array1,array2){
+  	var result = [];
+  	for (var i = 0; i < array1.length; i++) {
+  		if(!array2.includes(array1[i])){
+  			result.push(array1[i]);
+  		}
+  	}
+  	return result;
+  }
+  function pullAllBy(array,...arg) {
+  	var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+  //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(func(arg[i][j]));
+      }
+    }
+    for (var z = 0; z < array.length; z++) {
+      if(!arr.includes(func(array[z]))){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+
+  function pullWith (array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+      }
+   }
+    for (var z = 0; z < array.length; z++) {
+     if(!func(array[z],arr)){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+
+
+  function pullAt(array1,array2) {
+  	var result = [];
+  	for (var i = 0; i < array2.length; i++) {
+  		result.push(array1[array2[i]]);
+  		delete array1[array2[j]];
+  	}
+  	var len = array2.length;
+  	for (var z = 0; z < len; z++) {
+  		var key = array1.pop();
+  		if(key !== undefined){
+  			array1.unshift(key);
+  		}
+  	}
+  	return result;
+  }
+  function remove(array,func){
+  	var result = [];
+  	for (var i = 0; i < array.length; i++) {
+  		if(func(array[i])){
+  			result.push(i);
+  		}
+  	}
+  	return pullAt(array,result);
+  }
+  function reverse(array) {
+  	var start = 0;
+  	var end = array.length -1;
+  	while(start < end){
+  		[array[start],array[end]] = [array[end],array[start]];
+      start++;
+      end--;
+  	}
+    return array;
+  }
+  function slice(array,start = 0,end = array.length + 1){
+  	var result = [];
+  	for(var i = start;i < end;i++){
+  		result.push(array[i]);
+  	}
+  	return result;
+  }
+  
+  function sortedIndex(array,value) {
+    for(var i = 0;i < array.length;i++){
+      if(array[i] >= value){
+        return i;
+      }
+    }
+    return array.length;
+  }
+  
+  function sortedIndexBy(array,...arg) {
+    var func = iteratee(arg[arg.length - 1]);
+    var value = func(arg[0]);
+    for (var z = array.length - 1; z >= 0; z--) {
+      if(func(array[z]) > value){
+        return i;
+      }
+    }
+  }
+
+  function sortedIndexOf(array,value) {
+    for (var i = 0; i < array.length; i++) {
+      if(array[i] === value){
+        return i ;
+      }
+    }
+    return -1;
+  }
+
+  function sortedLastIndex(array,value) {
+  	for (var i = array.length - 1; i >= 0; i--) {
+  		if(array[i] < value){
+  			return i + 1;
+  		}
+  	}
+  }
+
+  function sortedLastIndexBy(array,...arg) {
+    var func = iteratee(arg[arg.length - 1]);
+    var value = func(arg[0]);
+    for (var z = array.length - 1; z >= 0; z--) {
+      if(func(array[z]) < value){
+        return i + 1;
+      }
+    }
+  }
+
+  function sortedLastIndexOf(array,value) {
+    for (var i = array.length - 1; i >= 0; i--) {
+      if(array[i] === value){
+        return i ;
+      }
+    }
+    return -1;
+  }
+  
+  function sortedUniq(array) {
+  	var result = [];
+  	for (var i = 0; i < array.length; i++) {
+  		if(array[i] !== array[i+1]){
+  			result.push(array[i]);
+  		}
+  	}
+    return result;
+  } 
+  
+  function sortedUniqBy(array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    var key = array[0];
+    for (var z = 0; z < array.length; z++) {
+      if(func(array[z]) !== func(array[z+1])){
+        result.push(key);
+        key = array[z+1];
+      }
+    }
+    return result;
+  }
+
+  function tail(array) {
+  	// body...
+  	return array.slice(1);
+  }
+  function take(array,n = 1) {
+  	// body...
+  	return array.slice(0,n);
+  }
 
 	function takeRight(array,n = 1) {
     	// body...
@@ -384,120 +514,221 @@ var baoliehua = function() {
         return array;
       }
     	return array.slice(array.length - n);
-    }
+  }
 
-    function union(...arg){
-    	var result = new Set();
-    	for (var i = 0; i < arg.length; i++) {
-    		for (var j = 0; j < arg[i].length; j++) {
-    			result.add(arg[i][j]);
-    		}
-    	}
-    	return Array.from(result);
-    }    
+  function union(...arg){
+  	var result = new Set();
+  	for (var i = 0; i < arg.length; i++) {
+  		for (var j = 0; j < arg[i].length; j++) {
+  			result.add(arg[i][j]);
+  		}
+  	}
+  	return Array.from(result);
+  }
 
-    function uniq(...arg){
-    	var result = new Set();
-    	for (var i = 0; i < arg.length; i++) {
-    		for (var j = 0; j < arg[i].length; j++) {
-    			result.add(arg[i][j]);
-    		}
-    	}
-    	return Array.from(result);
-    }
-
-    function zipped(argument) {
-      	// body...
-      	var result = [];
-      	for (var i = 0; i < argument[0].length; i++) {
-      		result[i] = [];
-      		for (var j = 0; j < argument.length; j++) {
-      			result[j][i] !== undefined?result[i].push(result[j][i]):1;
-      		}
-      	}
-      	return result;
+  function unionBy(...arg) {
+    var result = new Set();
+    var func = iteratee(arg[arg.length - 1]);
+    var arr = [],newarr = [];
+    for (var i = 0; i < arg.length; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+        newarr.push(func(arg[i][j]));
       }
-
-      function without(array,...arg) {
-        	// body...
-        	var result = [];
-        	for (var i = 0; i < array.length; i++) {
-        		if(!arg.includes(array[i])){
-              result.push(array[i]);
-            }
-        	}
-        	return result;
-        }
-
-        function xor(...array) {
-         	// body...
-         for (var i = 1; i < array.length; i++) {
-           array[0] = array[0].concat(array[i]);
-         }
-          var arr = array[0];
-         	var result = [];
-         	for (var i = 0; i < arr.length; i++) {
-         		if(arr.lastIndexOf(arr[i]) === arr.indexOf(arr[i])){
-         			result.push(arr[i]);
-         		}
-         	}
-         	return result;
-         } 
-
-         function zip(...argument) {
-         	var result = [];
-         	for (var i = 0; i < argument[0].length; i++) {
-         		result[i] = [];
-         		for (var j = 0; j < argument.length; j++) {
-         			result[i].push(argument[j][i]);
-         		}
-         	}
-         	return result;
-         }
+    }
+    for (var z = 0; z < newarr.length; z++) {
+      result.add(arr[newarr.indexOf(newarr[z])]);
+    }
+    return result;
+  }
 
 
-        function zipObject(array1,array2) {
-         	var result = {};
-         	for (var i = 0; i < array1.length; i++) {
-         		result[array1[i]] = array2[i];
-         	}
-         	return result;
-        }
-         //需修改
-         function zipObjectDeep(array1,array2) {
-         	var result = {};
-         	for (var i = 0; i < array1.length; i++) {
-         		var key = array1[i];
-         		while(Object.prototype.toString.call(key) === "[object Object]"){
-         			for(var j in key){
-         				key = key[j];
-         			}
-         		}
-         		key[array1[i]] = array2[i];
-         	}
-         	return result;
-         }
+  function uniq(...arg){
+  	var result = new Set();
+  	for (var i = 0; i < arg.length; i++) {
+  		for (var j = 0; j < arg[i].length; j++) {
+  			result.add(arg[i][j]);
+  		}
+  	}
+  	return Array.from(result);
+  }
 
-         function forEach(array,func) {
-           // body...
-           func = Function(func);
-           for (var i = 0; i < array.length; i++) {
-             func(array[i]);
-           }
+  function uniqBy(array,...arg) {
+    var result = new Set();
+    var func = iteratee(arg[arg.length - 1]);
+    var newarr = [];
+    for (var i = 0; i < array.length; i++) {
+        newarr.push(func(array[i]));
+    }
+    for (var z = 0; z < newarr.length; z++) {
+      result.add(array[newarr.indexOf(newarr[z])]);
+    }
+    return result;
+  }
 
-         }
+  function uniqWith(array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    //console.log(func,arg[arg.length-1],arg);
+    var arr = [];
+    for (var i = 0; i < arg.length - 1; i++) {
+      for (var j = 0; j < arg[i].length; j++) {
+        arr.push(arg[i][j]);
+      }
+    }
+    for (var z = 0; z < array.length; z++) {
+      if(func(array[z],arr)){
+        result.push(array[z]);
+      }
+    }
+    return result;
+  }
+
+  function unzip(argument) {
+  	// body...
+  	var result = [];
+  	for (var i = 0; i < argument[0].length; i++) {
+  		result[i] = [];
+  		for (var j = 0; j < argument.length; j++) {
+  			result[j][i] !== undefined?result[i].push(result[j][i]):1;
+  		}
+  	}
+  	return result;
+  }
+
+  function unzipWith(array,...arg) {
+    var result = [];
+    var func = iteratee(arg[arg.length - 1]);
+    for (var z = 0; z < array.length; z++) {
+      result.push(func(array[z]));
+    }
+    return result;
+  }
+  function without(array,...arg) {
+  	// body...
+  	var result = [];
+  	for (var i = 0; i < array.length; i++) {
+  		if(!arg.includes(array[i])){
+        result.push(array[i]);
+      }
+  	}
+  	return result;
+  }
+  function xor(...array) {
+   	// body...
+    for (var i = 1; i < array.length; i++) {
+      array[0] = array[0].concat(array[i]);
+    }
+    var arr = array[0];
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+    	if(arr.lastIndexOf(arr[i]) === arr.indexOf(arr[i])){
+    		result.push(arr[i]);
+    	}
+    }
+    return result;
+  } 
+
+  
+  function xorBy(...array) {
+    var newarr = [],arr = [];
+    var func = iteratee(array[array.length - 1]);
+    for (var i = 1; i < array.length - 1; i++) {
+      for (var j = 0; j < array[i].length; j++) {
+        newarr.push(func(array[i][j]));
+        arr.push(array[i][j]);
+      }
+    }
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+      if(newarr.lastIndexOf(newarr[i]) === newarr.indexOf(newarr[i])){
+        result.push(arr[i]);
+      }
+    }
+    return result;
+  }
+
+  function xorWith(...array) {
+    var newarr = [],arr = [];
+    var func = iteratee(array[array.length - 1]);
+    for (var i = 1; i < array.length - 1; i++) {
+      for (var j = 0; j < array[i].length; j++) {
+        arr.push(array[i][j]);
+      }
+    }
+    var result = new Set();
+    for (var i = 0; i < arr.length; i++) {
+      if(func(arr[i])){
+        result.add(arr[i]);
+      }
+    }
+    return Array.from(result);
+  }
+
+  function zip(...argument) {
+  	var result = [];
+  	for (var i = 0; i < argument[0].length; i++) {
+  		result[i] = [];
+  		for (var j = 0; j < argument.length; j++) {
+  			result[i].push(argument[j][i]);
+  		}
+  	}
+  	return result;
+  }
 
 
+  function zipObject(array1,array2) {
+   	var result = {};
+   	for (var i = 0; i < array1.length; i++) {
+   		result[array1[i]] = array2[i];
+   	}
+   	return result;
+  }
+   //需修改
+   function zipObjectDeep(array1,array2) {
+   	var result = {};
+   	for (var i = 0; i < array1.length; i++) {
+   		var key = array1[i];
+   		while(Object.prototype.toString.call(key) === "[object Object]"){
+   			for(var j in key){
+   				key = key[j];
+   			}
+   		}
+   		key[array1[i]] = array2[i];
+   	}
+   	return result;
+   }
 
-         function forEachRight(array,func) {
-           // body...
-           for (var i = array.length - 1; i >= 0; i--) {
-             func(array[i]);
-           }
+   function zipWith(...array) {
+    var newarr = [],arr = [];
+    var func = iteratee(array[array.length - 1]);
+    var result = [];
+    for (var i = 0; i < array[0].length; i++) {
+      result[i] = [];
+      for (var j = 0; j < array.length - 1; j++) {
+        result[i].push(array[j][i]);
+      }
+    }
+    for (var z = 0; z < result.length; z++) {
+      result[z] = func(result[z]);
+    }
+    return result;
+  }
+   function forEach(array,func) {
+     // body...
+     func = Function(func);
+     for (var i = 0; i < array.length; i++) {
+       func(array[i]);
+     }
+   }
+     function forEachRight(array,func) {
+       // body...
+       for (var i = array.length - 1; i >= 0; i--) {
+         func(array[i]);
+       
+     }
 
-         }
-
-      
+    }
          
 return {
     identity:identity,
