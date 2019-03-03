@@ -699,7 +699,7 @@ var baoliehua = function() {
     for (var z = 0; z < newarr.length; z++) {
       result.add(array[newarr.indexOf(newarr[z])]);
     }
-    return result;
+    return Array.from(result);
   }
 
   function uniqWith(array,...arg) {
@@ -720,13 +720,14 @@ var baoliehua = function() {
     return result;
   }
 
-  function unzip(argument) {
+  function unzip(array) {
   	// body...
   	var result = [];
-  	for (var i = 0; i < argument[0].length; i++) {
+  	for (var i = 0; i < array[0].length; i++) {
+      console.log(i)
   		result[i] = [];
-  		for (var j = 0; j < argument.length; j++) {
-  			result[j][i] !== undefined?result[i].push(result[j][i]):1;
+  		for (var j = 0; j < array.length; j++) {
+  			result[i].push(array[j][i]);
   		}
   	}
   	return result;
