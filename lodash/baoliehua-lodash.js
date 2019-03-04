@@ -1254,7 +1254,7 @@ var baoliehua = function() {
   }
 
   function isArrayLikeObject(value) {
-    return isArrayLike(value)&&typeOf(value) === "object";
+    return isArrayLike(value)&&typeof(value) === "object";
   }
 
   function isBoolean(value) {
@@ -1356,7 +1356,7 @@ var baoliehua = function() {
   }
 
   function isNaN(value) {
-    return Number.isNaN(value)||Object.prototype.toString.call(value) !== "[object Function]";
+    return Number.isNaN(value)||Object.prototype.toString.call(value) !== "[object Number]";
   }
 
   function isNative(value) {
@@ -1376,7 +1376,10 @@ var baoliehua = function() {
   }
 
   function isObject(value) {
-    return typeof(value) === "object";
+    if (value === null) {
+      false;
+    }
+    return typeof(value) === "object"||typeof(value) === "object";
   }
 
   function isObjectLike(value) {
