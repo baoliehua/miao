@@ -1195,7 +1195,7 @@ var baoliehua = function() {
   //lang
 
   function castArray(value) {
-    return value !== undefined?[value]:[];
+    return arguments.length !== 0?[value]:[];
   }
 
   function clone(value) {
@@ -1222,6 +1222,7 @@ var baoliehua = function() {
   }
 
   function eq(value,other) {
+    console.log(value,other,isNaN(NaN),isNaN(1))
     if(isNaN(value)&&isNaN(other)){
       return true;
     }
@@ -1253,7 +1254,7 @@ var baoliehua = function() {
   }
 
   function isArrayLikeObject(value) {
-    return isArrayLike(value)&&Object.prototype.toString.call(value) === "[object Object]";
+    return isArrayLike(value)&&typeOf(value) === "object";
   }
 
   function isBoolean(value) {
@@ -1288,8 +1289,15 @@ var baoliehua = function() {
 
 
   function isEqual(value,other) {
-    if(this.isEmpty(value)||this.isEmpty(other)){
-      return value === other
+    var count = 0;
+    for(var i in value){
+      count++;
+    }
+    for(var i in other){
+      count++;
+    }
+    if (!count) {
+      return value === other;
     }
     for(var i in value){
       if(!isEqual(value[i])){
@@ -1316,7 +1324,7 @@ var baoliehua = function() {
 
 
   function isInteger(value) {
-    return Math.floor(value) === value;
+    return Math.floor(value) === value&&value !== Infinity;
   }
 
 
@@ -1331,7 +1339,7 @@ var baoliehua = function() {
 
   function isMatch(object,source) {
     for(var i in source){
-      if (source[i] !== object[i]) {
+      if (!this.isEqual(source[i],object[i])) {
         return false;
       }
     }
@@ -1348,7 +1356,7 @@ var baoliehua = function() {
   }
 
   function isNaN(value) {
-    return Object.prototype.toString.call(value) === "[object NaN]"&&Object.prototype.toString.call(value) !== "[object Number]"
+    return Number.isNaN(value)||Object.prototype.toString.call(value) !== "[object Function]";
   }
 
   function isNative(value) {
@@ -1356,7 +1364,7 @@ var baoliehua = function() {
   }
 
   function isNil(value) {
-    return Object.prototype.toString.call(value) === "[object Null]"&&Object.prototype.toString.call(value) === "[object Undefined]";
+    return Object.prototype.toString.call(value) === "[object Null]"||Object.prototype.toString.call(value) === "[object Undefined]";
   }
 
   function isNull(value) {
@@ -1368,7 +1376,7 @@ var baoliehua = function() {
   }
 
   function isObject(value) {
-    return typeOf(value) === "object";
+    return typeof(value) === "object";
   }
 
   function isObjectLike(value) {
@@ -1376,7 +1384,7 @@ var baoliehua = function() {
   }
 
   function isPlainObject(value) {
-    return Object.prototype.toString.call(value) === "[object Object]"
+    return value.constructor === Object||value.constructor === undefined;
   }
 
   function isRegExp(value) {
@@ -1400,7 +1408,7 @@ var baoliehua = function() {
   }
 
   function isTypedArray(value) {
-    return this.isArrayLike&&!this.isArray;
+    return this.isArrayLike(value)&&!this.isArray(value);
   }
 
   function isUndefined(value) {
