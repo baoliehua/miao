@@ -1289,12 +1289,21 @@ var baoliehua = function() {
 
 
   function isEqual(value,other) {
+    if(Object.prototype.toString.call(value) !== Object.prototype.toString.call(other)){
+      return false;
+    }
+    if(Object.prototype.toString.call(value) ==="[object String]"&&Object.prototype.toString.call(other) ==="[object String]" ){
+      return value === other;
+    }
     var count1 = 0,count2 = 0;
     for(var i in value){
       count1++;
     }
     for(var i in other){
       count2++;
+    }
+    if(count1 !== count2){
+      return false;
     }
     if (!count1||!count2) {
       if(!count1&&!count2){
