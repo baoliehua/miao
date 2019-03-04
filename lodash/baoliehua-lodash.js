@@ -1485,6 +1485,115 @@ var baoliehua = function() {
   function toString(value) {
     return String(value);
   }
+
+  function add(augend, addend) {
+    return augend + addend;
+  }
+
+  function ceil(argument) {
+    return Math.round()
+  }
+
+  function divide(dividend, divisor) {
+    return dividend/divisor;
+  }
+
+  function floor() {
+    // body...
+  }
+
+  function max(array) {
+    var result = array[0];
+    for (var i = 0; i < array.length; i++) {
+      array[i] > result? result = array[i]:1;
+    }
+    return result;
+  }
+
+  function maxBy(array,func) {
+    func = iteratee(func);
+    var result = array[0];
+    for (var i = 0; i < array.length; i++) {
+      func(array[i] )> func(result)? result = array[i]:1;
+    }
+    return result;
+  }
+
+
+  function mean(array) {
+    var len = array.length;
+    var count = 0;
+    for (var i = 0; i < array.length; i++) {
+      count += array[i];
+    }
+    return count/len;
+  }
+
+  function meanBy(array,func) {
+    func = iteratee(func);
+    var sum = 0;
+    var count = 0;
+    for (var i in array) {
+      count++;
+      sum += func(array[i]);
+    }
+    return sum/count;
+  }
+
+  function min(array) {
+    var result = array[0];
+    for (var i = 0; i < array.length; i++) {
+      array[i] < result? result = array[i]:1;
+    }
+    return result;
+  }
+
+  function minBy(array,func) {
+    func = iteratee(func);
+    var result = array[0];
+    for (var i = 0; i < array.length; i++) {
+      func(array[i]) < func(result)? result = array[i]:1;
+    }
+    return result;
+  }
+
+  function maxBy(array,func) {
+    func = iteratee(func);
+    var result = array[0];
+    for (var i = 0; i < array.length; i++) {
+      func(array[i] ) < func(result)? result = array[i]:1;
+    }
+    return result;
+  }
+
+  function multiply(multiplier, multiplicand) {
+    return multiplier * multiplicand;
+  }
+
+  function round(argument) {
+    // body...
+  }
+
+  function subtract(minuend, subtrahend) {
+    return minuend - subtrahend;
+  }
+
+  function sum(array) {
+    var result = 0;
+    for (var i = 0; i < array.length; i++) {
+      result += array[i];
+    }
+    return result;
+  }
+
+  function sumBy(array,func) {
+    func = iteratee(func);
+    var result = 0;
+    for (var i = 0; i < array.length; i++) {
+      result += func(array[i]);
+    }
+    return result;
+  }
   return {
     chunk: chunk,
     compact: compact,
@@ -1630,5 +1739,21 @@ var baoliehua = function() {
     toPlainObject:toPlainObject,
     toSafeInteger:toSafeInteger,
     toString:toString,
+    //Math
+    add:add,
+    ceil:ceil,
+    divide:divide,
+    floor:floor,
+    max:max,
+    maxBy:maxBy,
+    mean:mean,
+    meanBy:meanBy,
+    min:min,
+    minBy:minBy,
+    multiply:multiply,
+    round:round,
+    subtract:subtract,
+    sum:sum,
+    sumBy:sumBy,
   }
 }()
