@@ -1052,6 +1052,12 @@ var baoliehua = function() {
   }
 
   function partition(array,func) {
+    if(Object.prototype.toString.call(func) === "[object Array]"){
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+      console.log(func)
+    }
     func = iteratee(func);
     var result1,result2;
     for (var i = 0; i < array.length; i++) {
@@ -1186,6 +1192,250 @@ var baoliehua = function() {
     return array;
   }
 
+  //lang
+
+  function castArray(value) {
+    return [value];
+  }
+
+  function clone(value) {
+    var result = [];
+    for(var i in value){
+      result[i] = value[i];
+    }
+    return result;
+  }
+
+  function cloneDeep(value) {
+    var result = [],count = 0;
+    for(var i in value){
+      count++;
+      result[i] = cloneDeep(value[i]);
+    }
+    return count?result:value;
+  }
+
+  function conformsTo(object,source) {
+    for(var i in source){
+      return source[i](object[i]);
+    }
+  }
+
+  function eq(value,other) {
+    if(isNaN(value)&&isNaN(other)){
+      return true;
+    }
+    return value === other;
+  }
+
+  function gt(value,other) {
+    return value > other;
+  }
+
+  function gte(value,other) {
+    return value >= other;
+  }
+
+  function isArguments(value) {
+    return Object.prototype.toString.call(value) === "[object Arguments]"
+  }
+
+  function isArray(value) {
+    return Object.prototype.toString.call(value) === "[object Array]"
+  }
+
+  function isArrayBuffer(value) {
+    return Object.prototype.toString.call(value) === "[object ArrayBuffer]"
+  }
+
+  function isArrayLike(value) {
+    return Object.prototype.toString.call(value) === "[object ArrayLike]"
+  }
+
+  function isArrayLikeObject(value) {
+    return Object.prototype.toString.call(value) === "[object ArrayLikeObject]"
+  }
+
+  function isBoolean(value) {
+    return Object.prototype.toString.call(value) === "[object Boolean]"
+  }
+
+  function isBuffer(value) {
+    return Object.prototype.toString.call(value) === "[object Buffer]"
+  }
+
+  function isDate(value) {
+    return Object.prototype.toString.call(value) === "[object Date]"
+  }
+
+  function isDate(value) {
+    return Object.prototype.toString.call(value) === "[object Date]"
+  }
+
+
+  function isElement(value) {
+    return Object.prototype.toString.call(value) === "[object Element]"
+  }
+
+
+  function isEmpty(value) {
+    return Object.prototype.toString.call(value) === "[object Empty]"
+  }
+
+
+  function isEqual(value) {
+    return Object.prototype.toString.call(value) === "[object Equal]"
+  }
+
+
+  function isError(value) {
+    return Object.prototype.toString.call(value) === "[object Error]"
+  }
+
+
+  function isFinite(value) {
+    return Object.prototype.toString.call(value) === "[object Finite]"
+  }
+
+
+  function isFunction(value) {
+    return Object.prototype.toString.call(value) === "[object Function]"
+  }
+
+
+  function isInteger(value) {
+    return Object.prototype.toString.call(value) === "[object Integer]"
+  }
+
+
+  function isLength(value) {
+    return Object.prototype.toString.call(value) === "[object Length]"
+  }
+
+
+  function isMap(value) {
+    return Object.prototype.toString.call(value) === "[object Map]"
+  }
+
+  function isMatch(value) {
+    return Object.prototype.toString.call(value) === "[object Match]"
+  }
+
+  function isMatchWith(value) {
+    return Object.prototype.toString.call(value) === "[object MatchWith]"
+  }
+
+  function isNaN(value) {
+    return Object.prototype.toString.call(value) === "[object NaN]"
+  }
+
+  function isNative(value) {
+    return Object.prototype.toString.call(value) === "[object Native]"
+  }
+
+  function isNil(value) {
+    return Object.prototype.toString.call(value) === "[object Nil]"
+  }
+
+  function isNull(value) {
+    return Object.prototype.toString.call(value) === "[object Null]"
+  }
+
+  function isNumber(value) {
+    return Object.prototype.toString.call(value) === "[object Number]"
+  }
+
+  function isObject(value) {
+    return Object.prototype.toString.call(value) === "[object Object]"
+  }
+
+  function isObjectLike(value) {
+    return Object.prototype.toString.call(value) === "[object ObjectLike]"
+  }
+
+  function isPlainObject(value) {
+    return Object.prototype.toString.call(value) === "[object PlainObject]"
+  }
+
+  function isRegExp(value) {
+    return Object.prototype.toString.call(value) === "[object RegExp]"
+  }
+
+  function isSafeInteger(value) {
+    return Object.prototype.toString.call(value) === "[object SafeInteger]"
+  }
+
+  function isSet(value) {
+    return Object.prototype.toString.call(value) === "[object Set]"
+  }
+
+  function isString(value) {
+    return Object.prototype.toString.call(value) === "[object String]"
+  }
+
+  function isSymbol(value) {
+    return Object.prototype.toString.call(value) === "[object Symbol]"
+  }
+
+  function isTypedArray(value) {
+    return Object.prototype.toString.call(value) === "[object TypedArray]"
+  }
+
+  function isUndefined(value) {
+    return Object.prototype.toString.call(value) === "[object Undefined]"
+  }
+
+  function isWeakMap(value) {
+    return Object.prototype.toString.call(value) === "[object WeakMap]"
+  }
+
+  function isWeakSet(value) {
+    return Object.prototype.toString.call(value) === "[object WeakSet]"
+  }
+
+  function lt(value,other) {
+    return value < other;
+  }
+
+  function lte(value,other) {
+    return value <= other;
+  }
+
+  function toArray(value) {
+    var result =[];
+    for(var i in value){
+      result.push(value[i]);
+    }
+    return result;
+  }
+
+  function toFinite(argument) {
+    // body...
+  }
+
+  function toInteger(value) {
+    return Math.floor(value)
+  }
+
+  function toLength(value) {
+    return String(value).length;
+  }
+
+  function toNumber(value) {
+    return Number(value);
+  }
+
+  function toPlainObject(value) {
+    return String(value).length;
+  }
+
+  function toSafeInteger(value) {
+    return String(value).length;
+  }
+
+  function toString(value) {
+    return String(value);
+  }
   return {
     chunk: chunk,
     compact: compact,
@@ -1276,6 +1526,60 @@ var baoliehua = function() {
     shuffle:shuffle,
     size:size,
     some:some,
-    sortBy:sortBy
+    sortBy:sortBy,
+    //lang
+    castArray:castArray,
+    clone:clone,
+    cloneDeep:cloneDeep,
+    conformsTo:conformsTo,
+    eq:eq,
+    gt:gt,
+    gte:gte,
+    isArguments:isArguments,
+    isArray:isArray,
+    isArrayBuffer:isArrayBuffer,
+    isArrayLike:isArrayLike,
+    isArrayLikeObject:isArrayLikeObject,
+    isBoolean:isBoolean,
+    isBuffer:isBuffer,
+    isDate:isDate,
+    isElement:isElement,
+    isEmpty:isEmpty,
+    isEqual:isEqual,
+    isError:isError,
+    isFinite:isFinite,
+    isFunction:isFunction,
+    isInteger:isInteger,
+    isLength:isLength,
+    isMap:isMap,
+    isMatch:isMatch,
+    isMatchWith:isMatchWith,
+    isNaN:isNaN,
+    isNative:isNative,
+    isNil:isNil,
+    isNull:isNull,
+    isNumber:isNumber,
+    isObject:isObject,
+    isObjectLike:isObjectLike,
+    isPlainObject:isPlainObject,
+    isRegExp:isRegExp,
+    isSafeInteger:isSafeInteger,
+    isSet:isSet,
+    isString:isString,
+    isSymbol:isSymbol,
+    isTypedArray:isTypedArray,
+    isUndefined:isUndefined,
+    isWeakMap:isWeakMap,
+    isWeakSet:isWeakSet,
+    lt:lt,
+    lte:lte,
+    toArray:toArray,
+    toFinite:toFinite,
+    toInteger:toInteger,
+    toLength:toLength,
+    toNumber:toNumber,
+    toPlainObject:toPlainObject,
+    toSafeInteger:toSafeInteger,
+    toString:toString,
   }
 }()
