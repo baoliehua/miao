@@ -1391,14 +1391,15 @@ var baoliehua = function() {
   }
 
   function isObject(value) {
+    console.log(value === null)
     if (value === null) {
-      false;
+      return false;
     }
     return typeof(value) === "object"||typeof(value) === "function";
   }
 
   function isObjectLike(value) {
-    return this.isObject(value)&&Object.prototype.toString.call(value) !== "[object Null]";
+    return typeof(value) === "object"&&Object.prototype.toString.call(value) !== "[object Null]";
   }
 
   function isPlainObject(value) {
