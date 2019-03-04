@@ -1195,7 +1195,7 @@ var baoliehua = function() {
   //lang
 
   function castArray(value) {
-    return [value];
+    return value !== undefined?[value]:[];
   }
 
   function clone(value) {
@@ -1249,11 +1249,11 @@ var baoliehua = function() {
   }
 
   function isArrayLike(value) {
-    return Object.prototype.toString.call(value) === "[object ArrayLike]"
+    return Object.prototype.toString.call(value) !== "[object Function]"&&value.length !== undefined&&value.length>=0&&value.length < Number.MAX_SAFE_INTEGER;
   }
 
   function isArrayLikeObject(value) {
-    return Object.prototype.toString.call(value) === "[object ArrayLikeObject]"
+    return isArrayLike(value)&&Object.prototype.toString.call(value) === "[object Object]";
   }
 
   function isBoolean(value) {
@@ -1279,12 +1279,24 @@ var baoliehua = function() {
 
 
   function isEmpty(value) {
-    return Object.prototype.toString.call(value) === "[object Empty]"
+    var count = 0;
+    for(var i in value){
+      count++;
+    }
+    return count === 0;
   }
 
 
-  function isEqual(value) {
-    return Object.prototype.toString.call(value) === "[object Equal]"
+  function isEqual(value,other) {
+    if(this.isEmpty(value)||this.isEmpty(other)){
+      return value === other
+    }
+    for(var i in value){
+      if(!isEqual(value[i])){
+        return false;
+      }
+    }
+    return true;
   }
 
 
@@ -1294,22 +1306,22 @@ var baoliehua = function() {
 
 
   function isFinite(value) {
-    return Object.prototype.toString.call(value) === "[object Finite]"
-  }
+    return Object.prototype.toString.call(value) === "[object Number]"&&value !== Infinity;
+   }
 
 
   function isFunction(value) {
-    return Object.prototype.toString.call(value) === "[object Function]"
+    return Object.prototype.toString.call(value) === "[object Function]";
   }
 
 
   function isInteger(value) {
-    return Object.prototype.toString.call(value) === "[object Integer]"
+    return Math.floor(value) === value;
   }
 
 
   function isLength(value) {
-    return Object.prototype.toString.call(value) === "[object Length]"
+    return this.isInteger(value);
   }
 
 
@@ -1317,24 +1329,34 @@ var baoliehua = function() {
     return Object.prototype.toString.call(value) === "[object Map]"
   }
 
-  function isMatch(value) {
-    return Object.prototype.toString.call(value) === "[object Match]"
+  function isMatch(object,source) {
+    for(var i in source){
+      if (source[i] !== object[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
-  function isMatchWith(value) {
-    return Object.prototype.toString.call(value) === "[object MatchWith]"
+  function isMatchWith(object,source,func) {
+    for(var i in source){
+      if (!func(source[i],object[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 
   function isNaN(value) {
-    return Object.prototype.toString.call(value) === "[object NaN]"
+    return Object.prototype.toString.call(value) === "[object NaN]"&&Object.prototype.toString.call(value) !== "[object Number]"
   }
 
   function isNative(value) {
-    return Object.prototype.toString.call(value) === "[object Native]"
+    return Object.prototype.toString.call(value) === "[object Function]"
   }
 
   function isNil(value) {
-    return Object.prototype.toString.call(value) === "[object Nil]"
+    return Object.prototype.toString.call(value) === "[object Null]"&&Object.prototype.toString.call(value) === "[object Undefined]";
   }
 
   function isNull(value) {
@@ -1346,15 +1368,15 @@ var baoliehua = function() {
   }
 
   function isObject(value) {
-    return Object.prototype.toString.call(value) === "[object Object]"
+    return typeOf(value) === "object";
   }
 
   function isObjectLike(value) {
-    return Object.prototype.toString.call(value) === "[object ObjectLike]"
+    return this.isObject(value)&&Object.prototype.toString.call(value) !== "[object Null]";
   }
 
   function isPlainObject(value) {
-    return Object.prototype.toString.call(value) === "[object PlainObject]"
+    return Object.prototype.toString.call(value) === "[object Object]"
   }
 
   function isRegExp(value) {
@@ -1362,7 +1384,7 @@ var baoliehua = function() {
   }
 
   function isSafeInteger(value) {
-    return Object.prototype.toString.call(value) === "[object SafeInteger]"
+    return this.isInteger(value);
   }
 
   function isSet(value) {
@@ -1378,7 +1400,7 @@ var baoliehua = function() {
   }
 
   function isTypedArray(value) {
-    return Object.prototype.toString.call(value) === "[object TypedArray]"
+    return this.isArrayLike&&!this.isArray;
   }
 
   function isUndefined(value) {
