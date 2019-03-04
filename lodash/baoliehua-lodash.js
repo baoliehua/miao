@@ -879,6 +879,11 @@ var baoliehua = function() {
 
 
   function every(array,func) {
+    if (Object.prototype.toString.call(func) === "[object Array]") {
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+    }
     func = iteratee(func);
     for (var i = 0; i < array.length; i++) {
       if(!func(array[i])){
@@ -890,6 +895,11 @@ var baoliehua = function() {
 
 
   function filter(array,func) {
+    if (Object.prototype.toString.call(func) === "[object Array]") {
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+    }
     var result = [];
     func = iteratee(func);
     for (var i = 0; i < array.length; i++) {
@@ -902,6 +912,11 @@ var baoliehua = function() {
 
 
   function find(array,func,index = 0) {
+    if (Object.prototype.toString.call(func) === "[object Array]") {
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+    }
     func = iteratee(func);
     for (var i = index; i < array.length; i++) {
       if(func(array[i])){
@@ -925,7 +940,7 @@ var baoliehua = function() {
     func = iteratee(func);
     var result = [];
     for (var i = 0; i < array.length; i++) {
-      result.concat(func(array[i]))
+      result = result.concat(func(array[i]))
     }
     return result;
   }
@@ -934,14 +949,14 @@ var baoliehua = function() {
     func = iteratee(func);
     var result = [];
     for (var i = 0; i < array.length; i++) {
-      result.concat(func(array[i]))
+      result = result.concat(func(array[i]))
       }
     
     result = flattenDeep(result);
     return result;
   }
 
-  function flatMapDepth(array,func,n) {
+  function flatMapDepth(array,func,n = 1) {
     func = iteratee(func);
     for (var i = 0; i < array.length; i++) {
       array[i] = func(array[i]);
@@ -959,6 +974,23 @@ var baoliehua = function() {
   }
 
   function includes(array,value,index = 0) {
+    if (Object.prototype.toString.call(array) === "[object Object]") {
+      var arr = [];
+      for(var j in array){
+        arr.push(array[j]);
+      }
+      array = arr;
+    }
+
+    if (Object.prototype.toString.call(array) === "[object String]") {
+      var reg = new RegExp(value);
+      if (reg.test(array)) {
+        return true;
+      }else{
+        return false;
+      }
+
+    }
     for (var i = index; i < array.length; i++) {
       if(array[i] === value){
         return true;
@@ -969,16 +1001,18 @@ var baoliehua = function() {
 
 
   function invokeMap(array,...arg) {
-    var func = iteratee(arg[0]);
+    var func = arg[0];
     if (arg.length === 1) {
       for (var i = 0; i < array.length; i++) {
-        array[i] = array[i].func();
+
+        array[i] = array[i][func]();
       }
     }else{
       for (var i = 0; i < array.length; i++) {
-        array[i] = array[i].func(arg[1]);
+        array[i] = array[i][func](arg[1]);
       }
     }
+    return array;
   }
 
 
@@ -992,6 +1026,20 @@ var baoliehua = function() {
   }
 
   function map(array,func) {
+    if(Object.prototype.toString.call(array) === "[object Object]"){
+      var arr = [];
+      for(var j in array){
+        arr.push(array[j]);
+      }
+      array = arr;
+    }
+    if(Object.prototype.toString.call(array) === "[object String]"){
+      var arr = [];
+      for(var j in array){
+        arr.push(array[j]);
+      }
+      array = arr;
+    }
     func = iteratee(func);
     for (var i = 0; i < array.length; i++) {
       array[i] = func(array[i]);
@@ -1005,12 +1053,12 @@ var baoliehua = function() {
 
   function partition(array,func) {
     func = iteratee(func);
-    var result = [[],[]];
+    var result = [];
     for (var i = 0; i < array.length; i++) {
       if(func(array[i])){
-        result[0].push(array[i]);
+        result[0]?result[0].push(array[i]):result[0] = [array[i]];
       }else{
-        result[1].push(array[i]);
+        result[1]?result[1].push(array[i]):result[1] = [array[i]];
       }
     }
     return result;
@@ -1050,6 +1098,11 @@ var baoliehua = function() {
   }
 
   function reject(array,func) {
+    if (Object.prototype.toString.call(array) === "[object Array]") {
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+    }
     func = iteratee(func);
     var result = [];
     for (var i = 0; i < array.length; i++) {
@@ -1087,6 +1140,11 @@ var baoliehua = function() {
   } 
 
   function some(array,func) {
+    if (Object.prototype.toString.call(array) === "[object Array]") {
+      var object = {};
+      object[func[0]] = func[1];
+      func = object;
+    }
     func = iteratee(func);
     for (var i = 0; i < array.length; i++) {
       if(func(array[i])){
@@ -1096,13 +1154,30 @@ var baoliehua = function() {
     return false;
   }
 
-  function sortBy(array,func) {
-    func = iteratee(func);
-    array.sort(function(a,b){
-      return func(a) - func(b);
-    })
-  }
+  function sortBy(array,funcs) {
+    for (var i = 0; i < funcs.length; i++) {
+      func = iteratee(funcs[i]);
+      array = array.sort(function(a,b){
+        a = func(a);
+        b = func(b);
+        if(Object.prototype.toString.call(a) === "[object String]"){
+          for(var i = 0;i < a.length;i++){
+            if (a[i] !== undefined&&b[i] === undefined||a[i].charCodeAt() > b[i].charCodeAt()) {
+              console.log(a[i].charCodeAt() ,b[i].charCodeAt())
+              return true;
+            }
+            if (a[i] === undefined||a[i].charCodeAt() < b[i].charCodeAt()) {
+              console.log(a[i].charCodeAt() ,b[i].charCodeAt())
+              return false;
+            }
 
+          }
+        }
+        return a - b;
+      })
+    }
+    return array;
+  }
 
   return {
     chunk: chunk,
