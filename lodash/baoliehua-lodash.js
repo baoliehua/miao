@@ -1053,13 +1053,20 @@ var baoliehua = function() {
 
   function partition(array,func) {
     func = iteratee(func);
-    var result = [];
+    var result1,result2;
     for (var i = 0; i < array.length; i++) {
       if(func(array[i])){
-        result[0]?result[0].push(array[i]):result[0] = [array[i]];
+        result1?result1.push(array[i]):result1 = [array[i]];
       }else{
-        result[1]?result[1].push(array[i]):result[1] = [array[i]];
+        result2?result2.push(array[i]):result2 = [array[i]];
       }
+    }
+    var result = [];
+    if(result1){
+      result.push(result1);
+    }
+    if(result2){
+      result.push(result2);
     }
     return result;
   }
@@ -1098,7 +1105,7 @@ var baoliehua = function() {
   }
 
   function reject(array,func) {
-    if (Object.prototype.toString.call(array) === "[object Array]") {
+    if (Object.prototype.toString.call(func) === "[object Array]") {
       var object = {};
       object[func[0]] = func[1];
       func = object;
@@ -1140,7 +1147,7 @@ var baoliehua = function() {
   } 
 
   function some(array,func) {
-    if (Object.prototype.toString.call(array) === "[object Array]") {
+    if (Object.prototype.toString.call(func) === "[object Array]") {
       var object = {};
       object[func[0]] = func[1];
       func = object;
