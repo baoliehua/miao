@@ -1289,18 +1289,24 @@ var baoliehua = function() {
 
 
   function isEqual(value,other) {
-    var count = 0;
+    var count1 = 0,count2 = 0;
     for(var i in value){
-      count++;
+      count1++;
     }
     for(var i in other){
-      count++;
+      count2++;
     }
-    if (!count) {
+    if (!count1||!count2) {
+      if(!count1&&!count2){
+        if(baoliehua.isArray(value)&&baoliehua.isArray(other)||baoliehua.isObject(value)&&baoliehua.isObject(other)){
+          return true;
+        }
+      }
       return value === other;
     }
     for(var i in value){
-      if(!isEqual(value[i])){
+      console.log(i,value[i],other[i])
+      if(!isEqual(value[i],other[i])){
         return false;
       }
     }
@@ -1379,7 +1385,7 @@ var baoliehua = function() {
     if (value === null) {
       false;
     }
-    return typeof(value) === "object"||typeof(value) === "object";
+    return typeof(value) === "object"||typeof(value) === "function";
   }
 
   function isObjectLike(value) {
