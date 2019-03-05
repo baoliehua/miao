@@ -1594,6 +1594,393 @@ var baoliehua = function() {
     }
     return result;
   }
+
+  function clamp(number,lower,upper) {
+    var result = number;
+    if(result < lower){
+      return lower;
+    }
+
+    if (result > upper) {
+      return upper;
+    }
+
+    return result;
+  }
+
+  function inRange(number,start,end) {
+    if (end !== undefined) {
+      start > end?[start,end] = [end,start]:1;
+    }else{
+      number > start?end = number:[end,start] = [start,number];
+    }
+    return number >= start&&number < end?true:false;
+  }
+
+
+  function random(lower = 0,upper = 1,floating) {
+    if (arguments[2] === true) {
+      return Math.random()*arguments[1] + arguments[0];
+    }
+    if (arguments.length === 2) {
+      if(arguments[1] === true||Math.floor(arguments[0]) !== arguments[0]||Math.floor(arguments[1]) !== arguments[1]){
+        return arguments[1] === true?Math.random()*arguments[0]:Math.random()*arguments[1]+arguments[0];
+      }else{
+        return  Math.floor(Math.random()*arguments[1]+arguments[0]);
+      }
+    }
+    
+    if (arguments.length === 1) {
+      return Math.floor(arguments[0]) !== arguments[0]?Math.random()*arguments[0]:Math.floor(Math.random()*arguments[0]);
+    }
+    if (arguments.length === 0) {
+      return Math.random();
+    }
+  }
+
+
+  function assign(object,...objs) {
+    for (var i = 0; i < objs.length; i++) {
+      for(var j in Object.keys(objs[i])){
+        object[j] = objs[i][j];
+      }
+    }
+    return object;
+  }
+
+
+  function assignIn(object,...objs) {
+    for (var i = 0; i < objs.length; i++) {
+      for(var j in objs[i]){
+        object[j] = objs[i][j];
+      }
+    }
+    return object;
+  }
+
+
+  function at(argument) {
+    // body...
+  }
+
+
+  function defaults(object,...source) {
+    for (var i = 0; i < source.length; i++) {
+      for(var j in source[i]){
+        if(object[j] === undefined){
+          object[j] = source[i][j];
+        }
+      }
+    }
+    return object;
+  }
+
+
+  function defaultsDeep(object,...source) {
+    for (var i = 0; i < source.length; i++) {
+      for(var j in source[i]){
+        if(object[j] === undefined){
+          object[j] = source[i][j];
+        }
+      }
+    }
+    return object;
+  }
+
+
+  function findKey(object,func) {
+    func = iteratee(func);
+    for(var i in object){
+      if(func(object[i])){
+        return i;
+      }
+    }
+  }
+
+
+  function findLastKey(object,func) {
+    var result = [];
+    func = iteratee(func);
+    for(var i in object){
+      if(func(object[i])){
+        result.push(i);
+      }
+    }
+    return result[-1];
+  }
+
+
+  function forIn(object,func) {
+    func = iteratee(func);
+    for(var i in object){
+      func(i,object[i],object);
+    }
+    return object;
+  }
+
+
+  function forInRight() {
+    var result = [];
+    func = iteratee(func);
+    for(var i in object){
+      result.push([i,object[i],object]);
+    }
+    for (var i = result.length - 1; i >= 0; i--) {
+      func(result[i][0],result[i][1],result[i][2])
+    }
+    return object;
+  }
+
+
+  function forOwn() {
+    func = iteratee(func);
+    for(var i in Object.keys(object)){
+      func(i,object[i],object);
+    }
+    return object;
+  }
+
+
+  function forOwnRight() {
+    var result = [];
+    func = iteratee(func);
+    for(var i in Object.keys(object)){
+      result.push([i,object[i],object]);
+    }
+    for (var i = result.length - 1; i >= 0; i--) {
+      func(result[i][0],result[i][1],result[i][2])
+    }
+    return object;
+  }
+
+
+  function functions(object) {
+    var result = [];
+    for(var i in Object.keys(object)){
+      result.push(i);
+    }
+    return result;
+  }
+
+  function functionsIn(object) {
+    var result = [];
+    for(var i in object){
+      result.push(i);
+    }
+    return result;
+  }
+
+  function get(argument) {
+    // body...
+  }
+
+  function has(argument) {
+    // body...
+  }
+
+  function hasIn(argument) {
+    // body...
+  }
+
+  function invert(object) {
+    var obj = {};
+    for(var i in object){
+      obj[object[i]] = i;
+    }
+    return obj;
+  }
+
+  function invertBy(object,func) {
+    func = iteratee(func);
+    var obj = {};
+    for(var i in object){
+      obj[func(object[i])] = i;
+    }
+    return obj;
+  }
+
+
+  function invoke(argument) {
+    // body...
+  }
+
+
+  function keys(object) {
+    return Object.keys(object);
+  }
+
+
+  function keysIn(object) {
+    var result = [];
+    for(var i in object){
+      result.push(i);
+    }
+    return result;
+  }
+
+  function mapKeys(object,func) {
+    func = iteratee(func);
+    var obj = {};
+    for(var i in object){
+      obj[func(i)] = object[i];
+    }
+    return obj;
+  }
+
+
+  function mapValues(object,func) {
+    func = iteratee(func);
+    var obj = {};
+    for(var i in object){
+      obj[i] = func(object[i]);
+    }
+    return obj;
+  }
+
+
+  function merge(object,...source) {
+    for (var i = 0; i < source.length; i++) {
+      for(var j in source[i]){
+        if(object[j] === undefined){
+          object[j] = source[i][j];
+        }else{
+          if(this.isArray(source[i][j])&&this.isArray(object[j])||Object.prototype.toString.call(source[i][j]) === "[object Object]"&&Object.prototype.toString.call(object[j]) === "[object Object]"){
+          object[j] =  merge(object[j],source[i][j]);
+          }else{
+            object[j] = source[i][j];
+          }
+        }
+      }
+    }
+    return object;
+  }
+
+
+  function mergeWith(object,...source) {
+    var func = iteratee(source[source.length - 1]);
+    for (var i = 0; i < source.length - 1; i++) {
+      for(var j in source[i]){
+        if(object[j] === undefined){
+          object[j] = source[i][j];
+        }else{
+          object[j] = func(object[j],source[i][j]);
+        }
+      }
+    }
+    return object;
+  }
+
+
+  function omit(object,...path) {
+    for (var i = 0; i < path.length; i++) {
+      if(this.isArray(path[i])){
+        for (var j = 0; j < path[i].length; j++) {
+          if(object[path[i][j]] !== undefined){
+            delete object[path[i][j]];
+          }
+        }
+      }else{
+        if(object[path[i]] !== undefined){
+            delete object[path[i]];
+        }
+      }
+    }
+    return object;
+  }
+
+
+  function omitBy(object,func) {
+    func = iteratee(func);
+    for (var i in object) {
+      if(func(object[i])){
+        delete object[i];
+      }
+    }
+    return object;
+  }
+
+
+  function pick(object,...path) {
+    var obj = {};
+    for (var i = 0; i < path.length; i++) {
+      if(isArray(path[i])){
+        for (var j = 0; j < path[i].length; j++) {
+          if(object[path[i][j]] !== undefined){
+            obj[path[i][j]] =  object[paht[i][j]];
+          }
+        }
+      }else{
+        if(object[path[i]] !== undefined){
+            obj[path[i]] = object[path[i]];
+        }
+      }
+    }
+    return obj;
+  }
+
+
+  function pickBy(object,func) {
+    var obj = {};
+    func = iteratee(func);
+    for (var i in object) {
+      if(func(object[i])){
+        obj[i] = object[i];
+      }
+    }
+    return obj;
+  }
+
+
+  function result(argument) {
+    // body...
+  }
+
+
+  function set(argument) {
+    // body...
+  }
+
+  function setWith(argument) {
+    // body...
+  }
+
+  function transform(argument) {
+    // body...
+  }
+
+  function unset(argument) {
+    // body...
+  }
+
+  function update(argument) {
+    // body...
+  }
+
+  function updateWith(argument) {
+    // body...
+  }
+
+  function values(object) {
+    var result = [];
+    for(var i in Object.keys(object)){
+      result.push(object[i]);
+    }
+    return result;
+  }
+
+
+  function valuesIn(object) {
+    var result = [];
+    for(var i in object){
+      result.push(object[i]);
+    }
+    return result;
+  }
+
+
+
+
+
   return {
     chunk: chunk,
     compact: compact,
@@ -1755,5 +2142,44 @@ var baoliehua = function() {
     subtract:subtract,
     sum:sum,
     sumBy:sumBy,
+    //Object
+    assign:assign,
+    assignIn:assignIn,
+    at:at,
+    defaults:defaults,
+    defaultsDeep:defaultsDeep,
+    findKey:findKey,
+    findLastKey:findLastKey,
+    forIn:forIn,
+    forInRight:forInRight,
+    forOwn:forOwn,
+    forOwnRight:forOwnRight,
+    functions:functions,
+    functionsIn:functionsIn,
+    get:get,
+    has:has,
+    hasIn:hasIn,
+    invert:invert,
+    invertBy:invertBy,
+    invoke:invoke,
+    keys:keys,
+    keysIn:keysIn,
+    mapKeys:mapKeys,
+    mapValues:mapValues,
+    merge:merge,
+    mergeWith:mergeWith,
+    omit:omit,
+    omitBy:omitBy,
+    pick:pick,
+    pickBy:pickBy,
+    result:result,
+    set:set,
+    setWith:setWith,
+    transform:transform,
+    unset:unset,
+    update:update,
+    updateWith:updateWith,
+    values:values,
+    valuesIn:valuesIn,
   }
 }()
