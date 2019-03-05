@@ -1689,6 +1689,11 @@ var baoliehua = function() {
 
 
   function findKey(object,func) {
+    if(this.isArray(func)){
+      var obj = {};
+      obj[func[0]] = func[1];
+      func = obj;
+    }
     func = iteratee(func);
     for(var i in object){
       if(func(object[i])){
@@ -1699,14 +1704,14 @@ var baoliehua = function() {
 
 
   function findLastKey(object,func) {
-    var result = [];
+    var result;
     func = iteratee(func);
     for(var i in object){
       if(func(object[i])){
-        result.push(i);
+        result = i;
       }
     }
-    return result[-1];
+    return result;
   }
 
 
@@ -1719,7 +1724,7 @@ var baoliehua = function() {
   }
 
 
-  function forInRight() {
+  function forInRight(object,func) {
     var result = [];
     func = iteratee(func);
     for(var i in object){
@@ -1732,7 +1737,7 @@ var baoliehua = function() {
   }
 
 
-  function forOwn() {
+  function forOwn(object,func) {
     func = iteratee(func);
     for(var i in Object.keys(object)){
       func(i,object[i],object);
@@ -1741,7 +1746,7 @@ var baoliehua = function() {
   }
 
 
-  function forOwnRight() {
+  function forOwnRight(object,func) {
     var result = [];
     func = iteratee(func);
     for(var i in Object.keys(object)){
@@ -1757,7 +1762,7 @@ var baoliehua = function() {
   function functions(object) {
     var result = [];
     for(var i in Object.keys(object)){
-      result.push(i);
+      result.push(object[i]);
     }
     return result;
   }
@@ -1791,11 +1796,15 @@ var baoliehua = function() {
   }
 
   function invertBy(object,func) {
-    func = iteratee(func);
     var obj = {};
-    for(var i in object){
-      obj[func(object[i])] = i;
-    }
+    if(func !== undefined){
+      func = iteratee(func);
+      for(var i in object){
+        obj[func(object[i])] === undefined?obj[func(object[i])] = [i]:obj[func(object[i])].push(i);
+      }
+    }else{
+       return invert(object);
+      }
     return obj;
   }
 
@@ -1822,7 +1831,7 @@ var baoliehua = function() {
     func = iteratee(func);
     var obj = {};
     for(var i in object){
-      obj[func(i)] = object[i];
+      obj[func(object[i],i)] = object[i];
     }
     return obj;
   }
@@ -1906,7 +1915,7 @@ var baoliehua = function() {
       if(isArray(path[i])){
         for (var j = 0; j < path[i].length; j++) {
           if(object[path[i][j]] !== undefined){
-            obj[path[i][j]] =  object[paht[i][j]];
+            obj[path[i][j]] =  object[path[i][j]];
           }
         }
       }else{
@@ -1963,7 +1972,8 @@ var baoliehua = function() {
   function values(object) {
     var result = [];
     for(var i in Object.keys(object)){
-      result.push(object[i]);
+      console.log(Object.keys(object)[i],object[i]);
+      result.push(object[Object.keys(object)[i]]);
     }
     return result;
   }
