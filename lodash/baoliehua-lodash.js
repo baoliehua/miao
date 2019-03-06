@@ -1988,6 +1988,264 @@ var baoliehua = function() {
   }
 
 
+  //String
+
+  function camelCase(string = "") {
+    var reg = /\w+/g;
+    var arr = string.match(reg);
+    arr[0] = arr[0].toLowerCase();
+    for (var i = 1; i < arr.length; i++) {
+        arr[i] = arr[i][0].toUpperCase() + (arr[i].slice(1)).toLowerCase();
+    }
+    return arr.join("");
+  }
+
+  function capitalize(string = "") {
+    string = string[0].toUpperCase() + (string.slice(1)).toLowerCase();
+  }
+
+
+  function deburr(string = "") {
+    // body...
+  }
+
+  function endWith(string = "",target,position = string.length) {
+    return string[position - 1] === target;
+  }
+
+
+  function escape(string = "") {
+    srting = string.split("");
+    for (var i = 0; i < Things.length; i++) {
+      switch(string[i]){
+        case "&":string[i] = "&amp;";break;
+        case "<":string[i] = "&lt;";break;
+        case ">":string[i] = "&gt;";break;
+        case "'":string[i] = "&quot;";break;
+        case '"':string[i] = "&apos;";break;
+      }
+    }
+    return string.join("");
+  }
+
+
+  function escapeRegExp(string = "") {
+    var arr = ["^", "$", "", ".", "*", "+", "?", "(", ")", "[", "]", "{", "}","|"];
+    var result = [];
+    for (var i = 0; i < string.length; i++) {
+      if(arr.includes(string[i])){
+        result.push("\\" +string[i]);
+      }else
+        result.push(string[i]);
+    }
+    return result.join("");
+  }
+
+
+  function kebabCase(string = "") {
+    var reg = /\w+/g;
+    var arr = string.match(reg);
+    for (var i = 0; i < arr.length; i++) {
+      for(var j = 0;j < arr[i].length;j++){
+
+      }
+    }
+  }
+
+
+  function lowerCase(argument) {
+    // body...
+  }
+
+
+  function lowerFirst(string = "") {
+    return string[0].toLowerCase() + string.slice(1);
+  }
+
+
+  function pad(string = "",length = 0,chars = " ") {
+    if (string.length >= length) {
+      return string;
+    }else{
+      var len = length - string.length;
+      var lenl = Math.floor(len/2);
+      var lenr = len - lenl;
+      var lenc = chars.length;
+      console.log(len,lenl,lenr,lenc)
+      var strl = chars.repeat(Math.ceil(lenl/lenc)).slice(0,lenl);
+      var strr = chars.repeat(Math.ceil(lenr/lenc)).slice(0,lenr);
+      return strl + string + strr;
+    }
+  }
+
+  function padEnd(string = "",length = 0,chars = " ") {
+    if (string.length >= length) {
+      return string;
+    }else{
+      var len = length - string.length;
+      var lenc = chars.length;
+      var strr = chars.repeat(Math.ceil(len/lenc)).slice(0,len);
+      return string + strr;
+    }
+  }
+
+
+  function padStart(string = "",length = 0,chars = " ") {
+    if (string.length >= length) {
+      return string;
+    }else{
+      var len = length - string.length;
+      var lenc = chars.length;
+      var strl = chars.repeat(Math.ceil(len/lenc)).slice(0,len);
+      return strl + string;
+    }
+  }
+
+
+  function padInt(string = "",length = 0,chars = " ") {
+    if (string.length >= length) {
+      return string;
+    }else{
+      var len = length - string.length;
+      var lenc = chars.length;
+      var strl = chars.repeat(Math.ceil(len/lenc)).slice(0,len);
+      return strl + string;
+    }
+  }
+
+
+  function repeat(string = "",n = 1) {
+    var result = "";
+    for (var i = 0; i < n; i++) {
+      result += string;
+    }
+    return result;
+  }
+
+  function replace(string = "",pattern,replacement) {
+    if (Object.prototype.toString.call(pattern) === "[object String]") {
+      string = string.split(pattern);
+      return string.join(replacement);
+    }
+  }
+
+
+  function snakeCase(argument) {
+    // body...
+  }
+
+  function split(string = "",separator,limit) {
+    
+  }
+
+  function startCase(argument) {
+    // body...
+  }
+
+  function startsWith(argument) {
+    // body...
+  }
+
+  function template(argument) {
+    // body...
+  }
+
+  function toLower(string) {
+    var reg = /[A-Z]/;
+    var result = [];
+    for (var i = 0; i < string.length; i++) {
+      if(reg.test(string[i])){
+        result.push(string[i].toLowerCase);
+      }else{
+        result.push(string[i]);
+      }
+    }
+    return result.join("");
+  }
+
+  function toupper(string) {
+    var reg = /[a-z]/;
+    var result = [];
+    for (var i = 0; i < string.length; i++) {
+      if(reg.test(string[i])){
+        result.push(string[i].toUpperCase);
+      }else{
+        result.push(string[i]);
+      }
+    }
+    return result.join("");
+  }
+
+  function trim(string = "",chars = " ") {
+    for (var i = 0; i < chars.length; i++) {
+      string = string.split(chars[i]);
+      string = string.join("");
+    }
+    return string;
+  }
+
+
+  function trimEnd(string = "",chars = " ") {
+    var arr = chars.split("");
+    string = string.split("");
+    for (var i = string.length - 1; i >= 0; i--) {
+      if(!arr.includes(string[i])){
+        break;
+      }else{
+        string.pop();
+      }
+    }
+    return string.join("");
+  }
+
+
+  function trimStart(string = "",chars = " ") {
+    var arr = chars.split("");
+    for (var i = 0; i < string.length; i++) {
+      if(!arr.includes(string[i])){
+        return string.slice(i);
+      }
+    }
+  }
+
+
+  function truncate(argument) {
+    // body...
+  }
+
+  function unescape(string = "") {
+    string = string.split("");
+    var arr = "&amp;, &lt;, &gt;, &quot;,&#39;".split(",");
+    var arr1 = ["&","<",">",'"',"'"];
+    for (var i = 0; i < arr.length; i++) {
+      string = string.split(arr[i]);
+      string = string.join(arr1[i]);
+    }
+  }
+
+
+  function upperCase(argument) {
+    // body...
+  }
+
+  function upperFirst(argument) {
+    // body...
+  }
+
+  function words(string = "",pattern) {
+    if(pattern === undefined){
+      var reg = /\w+/g;
+    }else if(Object.prototype.toString.call(pattern) === "[object Object]"){
+      var reg = new RegExp(pattern);
+    }
+      return string.match(reg);    
+  }
+
+
+
+
+
+
 
 
 
@@ -2191,5 +2449,34 @@ var baoliehua = function() {
     updateWith:updateWith,
     values:values,
     valuesIn:valuesIn,
+    //String
+    camelCase:camelCase,
+    capitalize:capitalize,
+    deburr:deburr,
+    escape:escape,
+    escapeRegExp:escapeRegExp,
+    kebabCase:kebabCase,
+    lowerCase:lowerCase,
+    lowerFirst:lowerFirst,
+    pad:pad,
+    padEnd:padEnd,
+    padStart:padStart,
+    parseInt:parseInt,
+    repeat:repeat,
+    replace:replace,
+    snakeCase:snakeCase,
+    split:split,
+    startCase:startCase,
+    startsWith:startsWith,
+    template:template,
+    toLower:toLower,
+    trim:trim,
+    trimEnd:trimEnd,
+    trimStart:trimStart,
+    truncate:truncate,
+    unescape:unescape,
+    upperCase:upperCase,
+    upperFirst:upperFirst,
+    words:words,
   }
 }()
