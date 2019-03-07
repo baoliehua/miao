@@ -10,7 +10,7 @@ var baoliehua = function() {
   function iteratee(argument) {
     if (Object.prototype.toString.call(argument) === "[object String]") {
       return function (object) {
-        return object[argument] ;
+        return baoliehua.method(argument)(object) ;
       }
     }else if(Object.prototype.toString.call(argument) === "[object Array]"||Object.prototype.toString.call(argument) === "[object Object]"){
       return function (object) {
@@ -1223,10 +1223,10 @@ var baoliehua = function() {
 
   function eq(value,other) {
     console.log(value,other,isNaN(NaN),isNaN(1))
-    if(isNaN(value)&&isNaN(other)){
+    if(isNaN(value)&&isNaN(other)&&typeof(value) === "number"&&typeof(other) === "number"){
       return true;
     }
-    return value === other;
+    return value === other&&typeof(value) === typeof(other);
   }
 
   function gt(value,other) {
@@ -1371,11 +1371,12 @@ var baoliehua = function() {
   }
 
   function isNaN(value) {
-    return Number.isNaN(value)||Object.prototype.toString.call(value) !== "[object Number]";
+    return Number.isNaN(value)||typeof(value) !== "[object Number]";
   }
 
   function isNative(value) {
-    return Object.prototype.toString.call(value) === "[object Function]"
+    //return Object.prototype.toString.call(value) === "[object Function]"
+    return value.constructor = Function; 
   }
 
   function isNil(value) {
@@ -1511,9 +1512,12 @@ var baoliehua = function() {
   }
 
   function maxBy(array,func) {
+    console.log(1)
     func = iteratee(func);
     var result = array[0];
+    console.log(array,array.length)
     for (var i = 0; i < array.length; i++) {
+      console.log(func(array[i]),func(result));
       func(array[i] )> func(result)? result = array[i]:1;
     }
     return result;
@@ -1557,14 +1561,7 @@ var baoliehua = function() {
     return result;
   }
 
-  function maxBy(array,func) {
-    func = iteratee(func);
-    var result = array[0];
-    for (var i = 0; i < array.length; i++) {
-      func(array[i] ) < func(result)? result = array[i]:1;
-    }
-    return result;
-  }
+  
 
   function multiply(multiplier, multiplicand) {
     return multiplier * multiplicand;
@@ -1659,8 +1656,16 @@ var baoliehua = function() {
   }
 
 
-  function at(argument) {
-    // body...
+  function at(object,path) {
+    var result = [];
+    console.log(result);
+    for (var i = 0; i < path.length; i++) {
+      var func = iteratee(path[i]);
+      console.log("func",func)
+      result.push(func(object));
+    }
+    console.log(result);
+    return result;
   }
 
 
@@ -1705,6 +1710,11 @@ var baoliehua = function() {
 
   function findLastKey(object,func) {
     var result;
+    if(Object.prototype.toString.call(func) === "[object Array]"){
+      var obj = {};
+      obj[func[0]] = func[1];
+      func = obj;
+    }
     func = iteratee(func);
     for(var i in object){
       if(func(object[i])){
@@ -1762,7 +1772,7 @@ var baoliehua = function() {
   function functions(object) {
     var result = [];
     for(var i in Object.keys(object)){
-      result.push(object[i]);
+      result.push(Object.keys(object)[i]);
     }
     return result;
   }
@@ -1775,22 +1785,80 @@ var baoliehua = function() {
     return result;
   }
 
-  function get(argument) {
-    // body...
+  function get(object,path,defaults) {
+    var result = defaults;
+    if(Object.prototype.toString.call(path) === "[object String]"){
+      var func = iteratee(path);
+      try{
+        result = func(object);
+      }catch(e){
+        return defaults;
+      }
+      return result;
+    }
+    for (var i = 0; i < path.length; i++) {
+      var func = iteratee(path[i]);
+      try{
+        object = func(object);
+      }catch(e){
+        return defaults;
+      }
+    }
+    return object?object:defaults;
   }
 
-  function has(argument) {
-    // body...
+
+
+  function has(object,path) {
+    var result = defaults;
+    if(Object.prototype.toString.call(path) === "[object String]"){
+      var func = iteratee(path);
+      try{
+        result = func(object);
+        return result === undefined?false:true;
+      }catch(e){
+        return false;
+      }
+    }
+    for (var i = 0; i < path.length; i++) {
+      var func = iteratee(path[i]);
+      try{
+        object = func(object);
+      }catch(e){
+        return false;
+      }
+    }
+    return object !== undefined?true:false;
   }
 
-  function hasIn(argument) {
-    // body...
+
+
+  function hasIn(object,path) {
+    var result = defaults;
+    if(Object.prototype.toString.call(path) === "[object String]"){
+      var func = iteratee(path);
+      try{
+        result = func(object);
+        return result === undefined?false:true;
+      }catch(e){
+        return false;
+      }
+    }
+    for (var i = 0; i < path.length; i++) {
+      var func = iteratee(path[i]);
+      try{
+        object = func(object);
+      }catch(e){
+        return false;
+      }
+    }
+    return object !== undefined?true:false;
   }
 
   function invert(object) {
     var obj = {};
     for(var i in object){
-      obj[object[i]] = i;
+      obj[object[i]] === undefined? obj[object[i]]= [i]:obj[object[i]].push(i);
     }
     return obj;
   }
@@ -1800,6 +1868,7 @@ var baoliehua = function() {
     if(func !== undefined){
       func = iteratee(func);
       for(var i in object){
+        console.log(i);
         obj[func(object[i])] === undefined?obj[func(object[i])] = [i]:obj[func(object[i])].push(i);
       }
     }else{
@@ -1809,8 +1878,14 @@ var baoliehua = function() {
   }
 
 
-  function invoke(argument) {
-    // body...
+  function invoke(object,path,...arg) {
+    if (Object.prototype.toString.call(path) === "[object String]") {
+      var func = iteratee(path);
+      arg = Array.from(arg);
+      console.log(arg,func(object));
+      func = func
+      return func(object)(...arg);
+    }
   }
 
 
@@ -2252,7 +2327,21 @@ var baoliehua = function() {
   function method(path,...args) {
     if (Object.prototype.toString.call(path) === "[object String]") {
       path = path.split(".");
+      var result = [];
+      for (var i = 0; i < path.length; i++) {
+        if(path[i].includes("[")){
+          path[i] = path[i].split("[");
+          for (var j = 0; j < path[i].length; j++) {
+            if(path[i][j].includes("]")){
+              path[i][j] = path[i][j].slice(0,path[i][j].length - 1);
+            }
+          }
+        }
+        result = result.concat(path[i]);
+      }
     }
+    path = result;
+    console.log(result);
     return function(object){
       for (var i = 0; i < path.length; i++) {
         object = object[path[i]];
@@ -2285,7 +2374,7 @@ var baoliehua = function() {
     if(arguments.length === 1){
       start = 0;
       end = arguments[0];
-      step = 1;
+      arguments > 0 ? step = 1:step = -1;
     }else if(arguments.length === 2){
       start = arguments[0];
       end = arguments[1];
@@ -2330,7 +2419,7 @@ var baoliehua = function() {
     if(arguments.length === 1){
       start = 0;
       end = arguments[0];
-      step = 1;
+      arguments > 0 ? step = 1:step = -1;
     }else if(arguments.length === 2){
       start = arguments[0];
       end = arguments[1];
@@ -2612,5 +2701,9 @@ var baoliehua = function() {
     mixin:mixin,
     range:range,
     rangeRight:rangeRight,
+    //Number
+    clamp:clamp,
+    inRange:inRange,
+    random:random,
   }
 }()
