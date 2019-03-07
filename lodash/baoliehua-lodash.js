@@ -2242,6 +2242,133 @@ var baoliehua = function() {
   }
 
 
+  //until
+
+  function matches(argument) {
+    
+  }
+
+
+  function method(path,...args) {
+    if (Object.prototype.toString.call(path) === "[object String]") {
+      path = path.split(".");
+    }
+    return function(object){
+      for (var i = 0; i < path.length; i++) {
+        object = object[path[i]];
+      }
+      return object;
+    }
+  }
+
+
+  function methodOf(object,...args) {
+    return function(path){
+      if (Object.prototype.toString.call(path) === "[object String]") {
+      path = path.split(".");
+      }
+      for (var i = 0; i < path.length; i++) {
+        object = object[path[i]];
+      }
+      return object;
+    }
+  }
+
+
+  function mixin(argument) {
+    // body...
+  }
+
+
+  function range() {
+    var start,end,step;
+    if(arguments.length === 1){
+      start = 0;
+      end = arguments[0];
+      step = 1;
+    }else if(arguments.length === 2){
+      start = arguments[0];
+      end = arguments[1];
+      step = 1;
+    }else{
+      start = arguments[0];
+      end = arguments[1];
+      step = arguments[2];
+    }
+    var count = Math.abs(start - end);
+    var result = [];
+    if (start < end) {
+      for (var i = start; i < end; i = i + step) {
+        result.push(i);
+        count--;
+        if (count === 0) {
+          return result;
+        }
+      }
+      return result;
+    }else if(end < start){
+      for (var i = start; i > end; i = i +step) {
+        result.push(i);
+        count--;
+        if (count === 0) {
+          return result;
+        }
+      }
+      return result;
+    }else{
+      while(count){
+        result.push(start);
+        count--;
+      }
+      return result;
+    }
+  }
+
+
+  function rangeRight() {
+    var start,end,step;
+    if(arguments.length === 1){
+      start = 0;
+      end = arguments[0];
+      step = 1;
+    }else if(arguments.length === 2){
+      start = arguments[0];
+      end = arguments[1];
+      step = 1;
+    }else{
+      start = arguments[0];
+      end = arguments[1];
+      step = arguments[2];
+    }
+    var count = Math.abs(start - end);
+    var result = [];
+    if (start < end) {
+      for (var i = start; i < end; i = i + step) {
+        result.unshift(i);
+        count--;
+        if (count === 0) {
+          return result;
+        }
+      }
+      return result;
+    }else if(end < start){
+      for (var i = start; i > end; i = i +step) {
+        result.unshift(i);
+        count--;
+        if (count === 0) {
+          return result;
+        }
+      }
+      return result
+    }else{
+      while(count){
+        result.push(start);
+        count--;
+      }
+      return result;
+    }
+  }
+
 
 
 
@@ -2478,5 +2605,12 @@ var baoliehua = function() {
     upperCase:upperCase,
     upperFirst:upperFirst,
     words:words,
+    //until
+    matches:matches,
+    method:method,
+    methodOf:methodOf,
+    mixin:mixin,
+    range:range,
+    rangeRight:rangeRight,
   }
 }()
