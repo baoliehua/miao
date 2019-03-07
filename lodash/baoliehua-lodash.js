@@ -1858,7 +1858,7 @@ var baoliehua = function() {
   function invert(object) {
     var obj = {};
     for(var i in object){
-      obj[object[i]] === undefined? obj[object[i]]= [i]:obj[object[i]].push(i);
+      obj[object[i]]= i;
     }
     return obj;
   }
@@ -1872,8 +1872,10 @@ var baoliehua = function() {
         obj[func(object[i])] === undefined?obj[func(object[i])] = [i]:obj[func(object[i])].push(i);
       }
     }else{
-       return invert(object);
+      for(var i in object){
+        obj[object[i]] === undefined? obj[object[i]]= [i]:obj[object[i]].push(i);
       }
+    }
     return obj;
   }
 
@@ -2374,7 +2376,7 @@ var baoliehua = function() {
     if(arguments.length === 1){
       start = 0;
       end = arguments[0];
-      arguments > 0 ? step = 1:step = -1;
+      arguments[0] > 0 ? step = 1:step = -1;
     }else if(arguments.length === 2){
       start = arguments[0];
       end = arguments[1];
@@ -2419,7 +2421,7 @@ var baoliehua = function() {
     if(arguments.length === 1){
       start = 0;
       end = arguments[0];
-      arguments > 0 ? step = 1:step = -1;
+      arguments[0] > 0 ? step = 1:step = -1;
     }else if(arguments.length === 2){
       start = arguments[0];
       end = arguments[1];
