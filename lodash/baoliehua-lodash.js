@@ -2045,7 +2045,7 @@ var baoliehua = function() {
     if(Object.prototype.toString.call(path) === "[object String]"){
       var func = iteratee(path);
       try{
-        //func(object) = target;
+        func(object) = target;
       }catch(e){
         return object;
       }
@@ -2534,10 +2534,7 @@ var baoliehua = function() {
 
 
   function once(func) {
-    return function () {
-      var arg = Array.from(arguments);
-
-    }
+    
   }
 
 
