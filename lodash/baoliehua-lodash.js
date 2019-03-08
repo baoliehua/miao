@@ -2070,7 +2070,7 @@ var baoliehua = function() {
   function transform(argument) {
     // body...
   }
-
+/**
   function unset(object,path) {
     var result;
     if(Object.prototype.toString.call(path) === "[object String]"){
@@ -2093,6 +2093,7 @@ var baoliehua = function() {
     result = target;
     return object;
   }
+  **/
 
   function update(argument) {
     // body...
@@ -2805,7 +2806,7 @@ var baoliehua = function() {
     //set:set,
     setWith:setWith,
     transform:transform,
-    unset:unset,
+   // unset:unset,
     update:update,
     updateWith:updateWith,
     values:values,
