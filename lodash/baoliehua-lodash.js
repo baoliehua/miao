@@ -2039,7 +2039,7 @@ var baoliehua = function() {
     return object?object:defaults;
   }
 
-
+/**
   function set(object,path,target) {
     var result;
     if(Object.prototype.toString.call(path) === "[object String]"){
@@ -2062,7 +2062,7 @@ var baoliehua = function() {
     result = target;
     return object;
   }
-
+**/
   function setWith(argument) {
     // body...
   }
@@ -2516,8 +2516,99 @@ var baoliehua = function() {
     }
   }
 
+  function ary(func,n = func.length) {
+    return function(...arg){
+      var result = [];
+      for (var i = 0; i < arg.length&&i<n; i++) {
+        result.push(arg[i]);
+      }
+      func(...result);
+    }
+  }
 
-  return{
+  function unary(func) {
+    return function(...arg){
+      func(arg[0]);
+    }
+  }
+
+
+  function once(func) {
+    
+  }
+
+
+  function flip(func) {
+    return function () {
+      var arg = Array.from(arguments);
+      arg = arg.reverse;
+      func(...arg);
+    }
+  }
+
+  function spread(func) {
+    return function (argument) {
+      return func(...argument);
+    }
+  }
+
+  function toPath(path) {
+    if (Object.prototype.toString.call(path) === "[object String]") {
+      path = path.split(".");
+      var result = [];
+      for (var i = 0; i < path.length; i++) {
+        if(path[i].includes("[")){
+          path[i] = path[i].split("[");
+          for (var j = 0; j < path[i].length; j++) {
+            if(path[i][j].includes("]")){
+              path[i][j] = path[i][j].slice(0,path[i][j].length - 1);
+            }
+          }
+        }
+        result = result.concat(path[i]);
+      }
+      path = result
+    }
+    return path;
+  }
+
+  function times(n,func) {
+    var result = [];
+    var func = iteratee(func);
+    for (var i = 0; i < n; i++) {
+      result.push(func(i));
+    }
+    return result;
+  }
+
+
+  function flow(funcs) {
+    return function (argument) {
+      argument = Array.from(arguments);
+      if (baoliehua.isArray(funcs)) {
+        for (var i = 0; i < funcs.length; i++) {
+          if(baoliehua.isArray(argument)){
+            argument = funcs[i](...argument);
+          }else{
+            argument = funcs[i](argument);
+          }
+        }
+      }
+      return argument;
+    }
+  }
+
+  return {
+    //other
+    ary:ary,
+    unary:unary,
+    once:once,
+    flip:flip,
+    spread:spread,
+    toPath:toPath,
+    times:times,
+    flow:flow,
+
     //Array
     chunk: chunk,
     compact: compact,
