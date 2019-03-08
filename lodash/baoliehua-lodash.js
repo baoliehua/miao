@@ -2802,7 +2802,7 @@ var baoliehua = function() {
     pick:pick,
     pickBy:pickBy,
     result:result,
-    set:set,
+    //set:set,
     setWith:setWith,
     transform:transform,
     unset:unset,
