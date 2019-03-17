@@ -865,13 +865,15 @@ var baoliehua = function() {
   }
   function forEach(array,func) {
     // body...
-    func = Function(func);
+    func = iteratee(func);
+    //func = Function(func);
     for (var i = 0; i < array.length; i++) {
       func(array[i]);
     }
   }
   function forEachRight(array,func) {
     // body...
+    func = iteratee(func);
     for (var i = array.length - 1; i >= 0; i--) {
       func(array[i]);
     }
