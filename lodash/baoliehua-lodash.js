@@ -870,6 +870,7 @@ var baoliehua = function() {
     for (var i = 0; i < array.length; i++) {
       func(array[i]);
     }
+    return array;
   }
   function forEachRight(array,func) {
     // body...
@@ -877,6 +878,7 @@ var baoliehua = function() {
     for (var i = array.length - 1; i >= 0; i--) {
       func(array[i]);
     }
+    return array;
   }
 
 
