@@ -1005,7 +1005,7 @@ var baoliehua = function() {
 
 
   function invokeMap(array,...arg) {
-    var func = arg[0];
+    var func = iteratee(arg[0]);
     if (arg.length === 1) {
       for (var i = 0; i < array.length; i++) {
 
@@ -2523,18 +2523,13 @@ var baoliehua = function() {
 
   function ary(func,n = func.length) {
     return function(...arg){
-      var result = [];
-      for (var i = 0; i < arg.length&&i<n; i++) {
-        result.push(arg[i]);
-      }
-      func(...result);
+      var initials = arg.slice(0,n);
+      return func(...initials);
     }
   }
 
   function unary(func) {
-    return function(...arg){
-      func(arg[0]);
-    }
+    return ary(func,1);
   }
 
 
@@ -2544,10 +2539,8 @@ var baoliehua = function() {
 
 
   function flip(func) {
-    return function () {
-      var arg = Array.from(arguments);
-      arg = arg.reverse;
-      func(...arg);
+    return function (...args) {
+      return func(...args.reverse());
     }
   }
 
@@ -2602,6 +2595,21 @@ var baoliehua = function() {
       return argument;
     }
   }
+
+
+  //视频
+
+  function after(n,func){
+    var calledTimes = 0;
+    return function(...arg){
+      calledTimes++;
+      if(calledTimes >= n){
+        return func(...arg);
+      }
+    }
+  }
+
+
 
   return {
     //other
