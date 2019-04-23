@@ -1,19 +1,60 @@
-import React, { Component } from 'react';
+import React , { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
+import { actionCreators } from './store';
+import { toJS } from 'immutable';
 import {
     HeaderWrapper,
     Logo,
     Nav,
     NavItem,
     NavSerch,
+    SearchInfo,
+    SearchInfoTitle,
+    SearchInfoSwitch,
+    SearchInfoList,
+    SearchInfoItem,
     Addition,
     Button,
     SearchWrapper,
 }   from './style';
 import {GlobalStyled} from '../../statics/iconfont/iconfont';
 
+
+
 class Header extends Component {
+
+    getListArea(show) {
+        const newList = this.props.list.toJS();
+        const pageList = [];
+        for(var i = this.props.page * 10; i < this.props.page * 10 + 10;i++){
+            pageList.push(
+                <SearchInfoItem key={newList[i]}>{newList[i]}</SearchInfoItem>
+            );
+        }
+        if(this.props.focused || this.props.mouseEnter){
+            return (
+            <SearchInfo 
+                onMouseEnter={this.props.handleMouseEnter}
+                onMouseLeave={this.props.handleMouseLeave}
+            >
+                <SearchInfoTitle>
+                    热门搜索
+                    <SearchInfoSwitch onClick={this.props.handleSwitchItem}>
+                        ~ 换一批
+                    </SearchInfoSwitch>
+                </SearchInfoTitle>
+                <SearchInfoList>
+                    {
+                        pageList
+                    }
+                </SearchInfoList>
+            </SearchInfo>);
+        }else{
+            return null;
+        }
+    }
+
     render() {
         return (
             <HeaderWrapper>
@@ -39,6 +80,7 @@ class Header extends Component {
                             ></NavSerch>
                         </CSSTransition>
                         <span className={this.props.focused ? 'focused iconfont':'iconfont'}>&#xe6e4;</span>
+                        {this.getListArea(this.props.focused)}
                     </SearchWrapper>
                 </Nav>
                 <Addition>
@@ -51,20 +93,38 @@ class Header extends Component {
             </HeaderWrapper>
         )
     }
-    
 }
+
+
 
 const mapStoreToProps  = (state) =>{
     return {
-        focused: state.focused, 
+        focused: state.getIn(["header","focused"]),
+        list: state.getIn(["header","list"]),
+        page: state.getIn(["header","page"]),
+        totalPage: state.getIn(["header","totalPage"]),
+        mouseEnter: state.getIn(["header","mouseEnter"]),
     }
 }
  
 const mapDispatchToProps  = (dispatch) =>{
     return {
         handleInputFocus(){
-            console.log(1);
-        }
+            dispatch(actionCreators.searchFocus()); 
+            dispatch(actionCreators.getList());
+        },
+        handleInputBlur() {
+            dispatch(actionCreators.searchBlur());
+        },
+        handleMouseEnter() {
+            dispatch(actionCreators.mouseEnter());
+        },
+        handleMouseLeave() {
+            dispatch(actionCreators.mouseLeave());
+        },
+        handleSwitchItem() {
+            dispatch(actionCreators.switchItem());
+        },
     }
 }
 
