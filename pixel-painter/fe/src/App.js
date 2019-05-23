@@ -23,7 +23,7 @@ class App extends Component {
     this.state = {
       currentColor: '#ff0000',
     }
-    this.socket = io('ws://localhost:3005/');
+    this.socket = io();
   }
   componentDidMount() {
     console.log(this.state.currentColor)

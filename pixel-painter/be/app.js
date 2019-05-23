@@ -7,10 +7,10 @@ const port = 3005;
 const server = app.listen(port, () => {
     console.log('sever listening on port',port);
 })
-
+const path = require('path');
 const io = SocketIO(server);
 
-// app.use(express.static(path.join (__dirname, './dist')));
+app.use(express.static(path.join (__dirname, '../fe/build')));
 async function main() {
     const pixelData = await Jimp.read('./pixelData.png');
     let onlineCount = 0;
