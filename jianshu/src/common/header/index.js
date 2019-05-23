@@ -1,8 +1,10 @@
-import React , { Component } from 'react';
+import React , { PureComponent } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
+import  * as actionCreatorsLogin  from '../../pages/login/store/actionCreator';
 import { toJS } from 'immutable';
+import { Link } from 'react-router-dom';
 import {
     HeaderWrapper,
     Logo,
@@ -22,16 +24,19 @@ import {GlobalStyled} from '../../statics/iconfont/iconfont';
 
 
 
-class Header extends Component {
+class Header extends PureComponent {
 
-    getListArea(show) {
+    getListArea() {
         const newList = this.props.list.toJS();
         const pageList = [];
-        for(var i = this.props.page * 10; i < this.props.page * 10 + 10;i++){
+        if(newList.length){
+           for(var i = this.props.page * 10; i < this.props.page * 10 + 10 && i < newList.length;i++){
             pageList.push(
                 <SearchInfoItem key={newList[i]}>{newList[i]}</SearchInfoItem>
             );
+            } 
         }
+        
         if(this.props.focused || this.props.mouseEnter){
             return (
             <SearchInfo 
@@ -40,8 +45,9 @@ class Header extends Component {
             >
                 <SearchInfoTitle>
                     热门搜索
-                    <SearchInfoSwitch onClick={this.props.handleSwitchItem}>
-                        ~ 换一批
+                    <SearchInfoSwitch onClick={() => this.props.handleChangePage(this.spinIcon)}>
+                        <span className="iconfont spin" ref={(icon) => {this.spinIcon = icon}}>&#xe85f;</span> 
+                        换一批
                     </SearchInfoSwitch>
                 </SearchInfoTitle>
                 <SearchInfoList>
@@ -59,11 +65,18 @@ class Header extends Component {
         return (
             <HeaderWrapper>
                 <GlobalStyled />
-                <Logo href = '/'/>
+                <Link to='/'>
+                    <Logo />
+                </Link>
                 <Nav>
                     <NavItem className='left active'>首页</NavItem>
                     <NavItem className='left'>下载</NavItem>
-                    <NavItem className='right'>登陆</NavItem>
+                    {
+                        this.props.login ? 
+                        <NavItem className='right' onClick={this.props.logout}>退出</NavItem> 
+                        : 
+                        <Link to='/login'><NavItem className='right'>登陆</NavItem></Link>
+                    }
                     <NavItem className='right'>
                       <span className="iconfont">&#xe636;</span>
                     </NavItem>
@@ -75,19 +88,21 @@ class Header extends Component {
                         >
                             <NavSerch
                                 className={this.props.focused ? 'focused':''}
-                                onFocus={this.props.handleInputFocus}
+                                onFocus={() => this.props.handleInputFocus(this.props.list)}
                                 onBlur={this.props.handleInputBlur}
                             ></NavSerch>
                         </CSSTransition>
-                        <span className={this.props.focused ? 'focused iconfont':'iconfont'}>&#xe6e4;</span>
-                        {this.getListArea(this.props.focused)}
+                        <span className={this.props.focused ? 'focused iconfont zoom':'iconfont zoom'}>&#xe6e4;</span>
+                        {this.getListArea()}
                     </SearchWrapper>
                 </Nav>
                 <Addition>
-                    <Button className='writting'>
-                        <span className="iconfont">&#xe616;</span>                    
-                        写文章
-                    </Button>
+                    <Link to='/write'>
+                        <Button className='writting'>
+                            <span className="iconfont">&#xe616;</span>                    
+                            写文章
+                        </Button>
+                    </Link>
                     <Button className='reg'>注册</Button>
                 </Addition>
             </HeaderWrapper>
@@ -104,14 +119,17 @@ const mapStoreToProps  = (state) =>{
         page: state.getIn(["header","page"]),
         totalPage: state.getIn(["header","totalPage"]),
         mouseEnter: state.getIn(["header","mouseEnter"]),
+        login: state.getIn(['login','login']),
     }
 }
  
 const mapDispatchToProps  = (dispatch) =>{
     return {
-        handleInputFocus(){
+        handleInputFocus(list){
             dispatch(actionCreators.searchFocus()); 
-            dispatch(actionCreators.getList());
+            if(list.size === 0){
+                dispatch(actionCreators.getList());                
+            }
         },
         handleInputBlur() {
             dispatch(actionCreators.searchBlur());
@@ -122,9 +140,18 @@ const mapDispatchToProps  = (dispatch) =>{
         handleMouseLeave() {
             dispatch(actionCreators.mouseLeave());
         },
-        handleSwitchItem() {
-            dispatch(actionCreators.switchItem());
+        handleChangePage(spinIcon) {
+            console.log(spinIcon.style.transform)
+            if(spinIcon.style.transform === ""||spinIcon.style.transform === "rotate(0deg)"){
+                spinIcon.style.transform = "rotate(720deg)"
+            }else{
+                spinIcon.style.transform = "rotate(0deg)"
+            }
+            dispatch(actionCreators.changePage());
         },
+        logout() {
+            dispatch(actionCreatorsLogin.logout());
+        }
     }
 }
 

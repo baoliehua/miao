@@ -27,7 +27,7 @@ export default (state = defaultState,action) =>{
     if(action.type === constants.MOUSE_LEAVE){
         return state.set("mouseEnter",false)
     }
-    if(action.type === constants.SWITCH_ITEM){
+    if(action.type === constants.CHANGE_PAGE){
         if(state.get("page") < 4){
             return state.set("page",state.get("page") + 1);
         }else{

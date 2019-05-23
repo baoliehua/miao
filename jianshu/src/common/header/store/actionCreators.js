@@ -25,8 +25,8 @@ export const mouseLeave = () => ({
     type: constants.MOUSE_LEAVE
 });
 
-export const switchItem = () => ({
-    type: constants.SWITCH_ITEM
+export const changePage = () => ({
+    type: constants.CHANGE_PAGE
 });
 
 

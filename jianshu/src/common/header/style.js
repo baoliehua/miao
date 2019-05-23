@@ -3,12 +3,13 @@ import logoPic from '../../statics/logo.png';
 
 
 export const HeaderWrapper = styled.div`
+    z-index: 1;
     position:relative;
     height: 56px;
     border-bottom: 1px solid #f0f0f0;
 `;
 
-export const Logo = styled.a`
+export const Logo = styled.div`
     position:absolute;
     top:0;
     left:0;
@@ -88,6 +89,7 @@ export const SearchInfo = styled.div`
     width: 240px;
     padding: 0 20px;
     border: 1px solid black;
+    background: white;
 `;
 
 export const SearchInfoTitle = styled.div`
@@ -98,9 +100,15 @@ export const SearchInfoTitle = styled.div`
 `;
 
 export const SearchInfoSwitch = styled.div`
-    position: relative;
     float: right;
     font-size: 13px;
+    span {
+        display: block;
+        float: left;
+        font-size: 12px;
+        margin-right: 12px;
+        transition: all .2s ease-in;
+    }
 `;
 
 export const SearchInfoList = styled.div`
@@ -114,6 +122,7 @@ export const SearchInfoItem = styled.div`
     padding:0 5px;
     border: 1px solid black;
     margin: 0px 10px 15px 0px;
+    font-size: 12px;
     color: #969696;
     border-radius: 2px;
 `;
@@ -149,7 +158,7 @@ export const SearchWrapper = styled.div`
     position: relative;
     float: left;
     
-    .iconfont {
+    .zoom {
         position: absolute;
         right: 5px;
         bottom: 5px;
@@ -164,5 +173,3 @@ export const SearchWrapper = styled.div`
         }
     }
 `
-
-

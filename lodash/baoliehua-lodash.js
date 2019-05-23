@@ -2609,6 +2609,10 @@ var baoliehua = function() {
     }
   }
 
+  function isPrimitive(val){
+    
+  }
+
 
 
   return {
