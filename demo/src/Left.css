@@ -1,0 +1,33 @@
+#left-middle{
+    float: left;
+}
+
+#float {
+    position: absolute;
+    left:5%;
+    width:60%;
+    background:#e7e7e7;
+}
+
+#category-name input{
+    width:60%;
+}
+
+
+#close{
+    position:absolute;
+    top:10px;
+    right:10px
+}
+#left-middle,#left {
+    width:80%;
+}
+#set-category {
+    margin: 0 auto;
+}
+
+#add-category {
+    width:200px;
+    margin:0 auto;
+    border: 2px  black dashed;
+}

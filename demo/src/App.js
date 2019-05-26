@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Right from './Right';
 import Left from './Left';
-
+//初始数据
 var pagestate = {
 	"category": "test",
 	"labels": [{
@@ -70,6 +70,7 @@ class App extends Component {
 	};
   }
 
+  //从Left中接收传来的数据
   changeCategory = (category,labels) => {
 	// console.log(newData,this.state.pagestate);
 	let newData = {

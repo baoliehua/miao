@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import Item from './Item';
 import { fromJS, toJS } from 'immutable';
+import './Left.css';
 class Left extends Component {
     constructor (props){
         super(props);
@@ -8,11 +9,11 @@ class Left extends Component {
             category: '',
             labels:[],
             show:'false',
-            
         }
         this.newstate = fromJS(this.state.labels);
-    }
+    }   
 
+    //创建一个节点
     createNode = (value) => {
         let newNode = {};
         newNode.labelName = value;
@@ -20,18 +21,7 @@ class Left extends Component {
         return newNode;
     }
 
-    produceTree = (parent,value) => {
-        let child = this.createNode(value);
-        parent.children === undefined ? parent.children = [child] : parent.children.push(child);
-    }
-
-    inputChange = (value,dataPath) => {
-        this.newstate = this.newstate.setIn([...dataPath,"labelName"],value);
-        this.newstate = this.newstate.setIn([...dataPath,"labelValue"],value);
-        this.setState({labels : this.newstate.toJS()})
-        // console.log(this.state,value,dataPath,this.newstate.getIn([...dataPath,"labelName"]))
-    }
-
+    //新建一个一级节点
     appendFist = () => {
         let newInput = this.createNode('');
         // console.log(this.state.labels.slice().push(newInput))
@@ -43,6 +33,7 @@ class Left extends Component {
         })
     }
 
+    //新增一个下级节点
     appendChild = (dataPath) => {
         let newInput = this.createNode('');
         // console.log(this.state.labels.slice().push(newInput))
@@ -62,6 +53,7 @@ class Left extends Component {
         console.log(dataPath)
     }
 
+    //删除当前节点
     deleteSelf = (dataPath) => {
         let index = dataPath.pop();
         if(dataPath.length === 0){
@@ -84,6 +76,8 @@ class Left extends Component {
         }
         console.log(dataPath)
     }
+
+    //将数据渲染成节点树
     renderTree = (node,path=[]) => {
         if(node === undefined){
             return;
@@ -99,7 +93,7 @@ class Left extends Component {
                     dataPath.pop();
                     // console.log('node',path,this.newstate.getIn(["labels"]));
 
-                    return <div style={{marginLeft:'20px'}} key={item.labelValue}>
+                    return <div style={{marginLeft:'20px'}} key={item.labelValue+index}>
                                 <Item 
                                     change={this.inputChange}
                                     append={this.appendChild}
@@ -116,16 +110,25 @@ class Left extends Component {
         )
     }
 
+    //从输入框中读取类别名
     addCategory = () => {
         this.el.addEventListener('blur',() => {
             console.log(this.el.value)
             this.setState({
                 category:this.el.value,
             })
-            // console.log(this.el.value,this.state.category)
         })
     }
-    
+
+    //通过input输入改变节点的名字与值
+    inputChange = (value,dataPath) => {
+        this.newstate = this.newstate.setIn([...dataPath,"labelName"],value);
+        this.newstate = this.newstate.setIn([...dataPath,"labelValue"],value);
+        this.setState({labels : this.newstate.toJS()})
+        // console.log(this.state,value,dataPath,this.newstate.getIn([...dataPath,"labelName"]))
+    }
+
+    //改变是否显示状态
     changeShowState = (boolean,send) => {
         if(send){
             this.props.changeCategory(this.state.category,this.state.labels);
@@ -139,22 +142,20 @@ class Left extends Component {
         this.newstate = fromJS(this.state.labels);
     }
     
-    componentDidMount() {
-       
-    }
+    //根据显示状态决定是否显示新增问题窗口
     showEl = () => {
-        console.log('show',this.state.show)
+        // console.log('show',this.state.show)
         if(this.state.show === true){
-            return <div style={{position:"absolute",width:'80%',top:'20%',left:'10%',backgroundColor:'gray'}}>
-            <h2>添加题目</h2>
-            <button style={{position:'absolute',top:'10px',right:'10px'}} onClick={() =>this.changeShowState(false,true) }>X</button>
+            return <div id='float' >
+            <h2 className='float-top'>添加题目</h2>
+            <button id='close' onClick={() =>this.changeShowState(false,true) }>X</button>
             <div>
-                <label>分类名：
-                    <input ref={el => this.el = el} style={{width:'60%'}}></input>
+                <label id='category-name'>分类名：
+                    <input ref={el => this.el = el} ></input>
                 </label>
             </div>
             <div>
-                <div>
+                <div id='category-list'>
                     <label style={{float:'left',marginLeft:'16%'}}>类别：</label>
                     <div style={{display:'inline-block',marginLeft:'-32.6%',marginBottom:'10px'}}>
                         {/* {console.log(this.state,'saa')} */}
@@ -170,24 +171,23 @@ class Left extends Component {
         </div>
         }
     }
+
     componentDidUpdate () {
         if(this.el){
             this.addCategory();
         }
     }
+
     render() {
         return(
-            <div className='left' style={{float:'left'}}>
-                <div className='left-top'></div>
-                <div className='left-middle'>
-                    <div >
-                        <div onClick={() => this.changeShowState(true,false)}>+添加题目</div>
+            <div id='left'>
+                <div id='left-middle'>
+                    <div id='set-category'>
                         <div>题目设置</div>
+                        <div id='add-category' onClick={() => this.changeShowState(true,false)}>+添加题目</div>
                     </div>
-                    {this.showEl()}
-                    
                 </div>
-                <div className='left-bottom'></div>
+                {this.showEl()}
             </div>
         );
     }
