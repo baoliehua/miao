@@ -148,7 +148,7 @@ class Left extends Component {
         if(this.state.show === true){
             return <div id='float' >
             <h2 className='float-top'>添加题目</h2>
-            <button id='close' onClick={() =>this.changeShowState(false,true) }>X</button>
+            <button id='close' onClick={() =>this.changeShowState(false,false) }>X</button>
             <div>
                 <label id='category-name'>分类名：
                     <input ref={el => this.el = el} ></input>
