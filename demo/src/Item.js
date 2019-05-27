@@ -10,7 +10,7 @@ class Item extends Component{
         })
     }
     componentDidMount() {
-        console.log('item',this.ele)
+        // console.log('item',this.ele)
         this.ele.value = this.props.value;
         this.getInput();
     }

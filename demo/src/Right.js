@@ -17,7 +17,7 @@ class Right extends Component {
             newList.push(children);
         } 
         
-        console.log('new',newList,children)
+        // console.log('new',newList,children)
         this.setState({
             list: newList,
         })
@@ -60,7 +60,7 @@ class Right extends Component {
                     <div id = 'title'><span></span>{this.state.title}</div>
                     {this.state.list.map( (item,index) => <div  key={index} className='items'>
                         <div>第{index+1}步：请选择{index+1}级类别</div>
-                        {item.map( (i) => <div className='item' key={i.labelName}  onClick={() => this.clickLabel(i.children,index)}>{i.labelValue} </div>)}
+                        {item.map( (i,index1) => <div className='item' key={i.labelName+index1}  onClick={() => this.clickLabel(i.children,index)}>{i.labelValue} </div>)}
                     </div>)}
                 </div>
             </div>
