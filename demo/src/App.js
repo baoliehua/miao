@@ -85,7 +85,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-		 <Left changeCategory={this.changeCategory}/>
+		 		 <Left changeCategory={this.changeCategory}/>
          <Right state = {this.state.pagestate}/>
       </div>
     );

@@ -24,7 +24,6 @@ class Left extends Component {
     //新建一个一级节点
     appendFist = () => {
         let newInput = this.createNode('');
-        // console.log(this.state.labels.slice().push(newInput))
         let appendone = this.state.labels.slice();
         appendone.push(newInput);
         this.newstate = fromJS(appendone)
@@ -36,8 +35,6 @@ class Left extends Component {
     //新增一个下级节点
     appendChild = (dataPath) => {
         let newInput = this.createNode('');
-        // console.log(this.state.labels.slice().push(newInput))
-        // console.log(this.newstate.getIn([...dataPath,'children'] ).toJS())
         let newList;
         if(this.newstate.getIn([...dataPath,'children'])){
             newList = this.newstate.getIn([...dataPath,'children']);
@@ -50,7 +47,6 @@ class Left extends Component {
         this.setState({
             labels : this.newstate.toJS(),
         })
-        console.log(dataPath)
     }
 
     //删除当前节点
@@ -65,8 +61,8 @@ class Left extends Component {
                 labels : this.newstate.toJS(),
             })
         }else{
-            let newList = this.newstate.getIn([...dataPath]);
-            console.log(this.newstate.getIn([...dataPath]))
+            let newList = this.newstate.getIn(dataPath);
+            console.log(this.newstate.getIn(dataPath))
             newList.splice(index,1);
             this.newstate = this.newstate.setIn([...dataPath],newList);
             // this.newstate = fromJS(this.state.labels);
@@ -74,7 +70,6 @@ class Left extends Component {
                 labels : this.newstate.toJS(),
             })
         }
-        console.log(dataPath)
     }
 
     //将数据渲染成节点树
@@ -101,7 +96,6 @@ class Left extends Component {
                                     path={dataPath} 
                                     value={this.newstate.getIn([...dataPath,"labelName"])}
                                 />
-                                {/* {console.log(item.children)} */}
                                 {this.renderTree(item.children,nowPath)}
                             </div>
                 })
@@ -124,8 +118,9 @@ class Left extends Component {
     inputChange = (value,dataPath) => {
         this.newstate = this.newstate.setIn([...dataPath,"labelName"],value);
         this.newstate = this.newstate.setIn([...dataPath,"labelValue"],value);
-        this.setState({labels : this.newstate.toJS()})
-        // console.log(this.state,value,dataPath,this.newstate.getIn([...dataPath,"labelName"]))
+        this.setState({
+            labels : this.newstate.toJS()
+        })
     }
 
     //改变是否显示状态
@@ -158,7 +153,6 @@ class Left extends Component {
                 <div id='category-list'>
                     <label style={{float:'left',marginLeft:'16%'}}>类别：</label>
                     <div style={{display:'inline-block',marginLeft:'-32.6%',marginBottom:'10px'}}>
-                        {/* {console.log(this.state,'saa')} */}
                         {this.renderTree(this.newstate.toJS())}
                     </div>
                 </div>
